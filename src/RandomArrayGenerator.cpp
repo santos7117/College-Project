@@ -6,9 +6,6 @@
 
 #include "Element.cpp"
 
-const size_t ARR_SIZE = 225;
-const unsigned RANGE = 500;
-
 class RandomArrayGenerator {
 
 private:

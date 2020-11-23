@@ -7,11 +7,6 @@
 #include "UI/SortFrameRenderer.cpp"
 
 
-const unsigned SCR_WIDTH = 1600;
-const unsigned SCR_HEIGHT = 900;
-const sf::VideoMode SCR_DIMENSIONS = sf::VideoMode(SCR_WIDTH, SCR_HEIGHT);
-
-
 
 class App {
 private:
@@ -30,9 +25,18 @@ private:
 
 public:
 
+	// Constructor
+	App() :
+		sortFrame(window)
+	{
+
+	}
+
 	void init() {
-		window.create(SCR_DIMENSIONS, "Visualizer"/*, sf::Style::Fullscreen*/);
-		window.setFramerateLimit(1);
+		window.create(SCR_DIMENSIONS, "Visualizer", SCR_STYLE);
+		window.setFramerateLimit(30);
+
+		isPaused = 0;
 	}
 
 
@@ -55,12 +59,17 @@ public:
 
 					case sf::Keyboard::I:
 						sortFrame.visualizeInsertion();
+						break;
+
 
 					case sf::Keyboard::S:
 						sortFrame.visualizeShellSort();
+						break;
 
 					case sf::Keyboard::P:
-						isPaused ? resume() : pause();
+						isPaused = !isPaused;
+						pause();
+						break;
 
 				}
 			}
@@ -69,24 +78,27 @@ public:
 
 	// Handles pause state
 	void pause() {
-
-	}
-
-	// Resumes the App
-	void resume() {
-
+		while (isPaused) {
+			processAppEvents();
+		}
 	}
 
 	// Runs App instance
 	void run() {
 		init();
 
+		//sf::CircleShape circle(10);
+		//circle.setPosition(100.f, 100.f);
+		//circle.setFillColor(sf::Color::White);
+
 		while (window.isOpen()) {
 			processAppEvents();
 
-			drawComponents();
-			//sortFrame.visualizeInsertion();
+			window.clear();
+			//window.draw(circle);
+			//circle.move(5.f, 5.f);
 
+			drawComponents();
 
 			window.display();
 		}
