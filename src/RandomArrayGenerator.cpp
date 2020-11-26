@@ -1,8 +1,6 @@
 #pragma once
 
-#include <random>
-#include <ctime>
-#include <array>
+#include "stdafx.hpp"
 
 #include "Element.cpp"
 

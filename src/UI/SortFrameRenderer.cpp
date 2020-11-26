@@ -1,63 +1,38 @@
+//#include "../stdafx.hpp"
 #pragma once
 
-#include <time.h>
-
-#include <SFML/Graphics/RectangleShape.hpp>
-#include <SFML/Graphics/RenderWindow.hpp>
 
 #include "../config.cpp"
 #include "../RandomArrayGenerator.cpp"
 
 
 
-class SortFrameRenderer
+class SortFrame
 {
 private:
 	sf::RenderWindow& target;
-	unsigned numOfElements = 20;
-	float singleElementWidth;
-	float gap;
 	//unsigned sleepTime = .5;
 	//std::clock_t clock;
 
-	sf::RectangleShape frame;
 	sf::RectangleShape baseLine;
+	sf::RectangleShape frame;
+	unsigned numOfElements;
 
 	RandomArrayGenerator randomElementsArr;
 	std::array <Element, ARR_SIZE> elements;
 
+	float singleElementWidth;
+	float gap;
 
 	void setSortFrame() {
-		frame.setFillColor(mFrameColor);
-		frame.setPosition(mFramePos);
-		frame.setSize(mFrameSize);
+		frame.setFillColor(themeColor);
+		frame.setPosition(framePos);
+		frame.setOutlineColor(frameBorderColor);
+		frame.setOutlineThickness(1.f);
 
-		baseLine.setFillColor(baseLineColor);
-		baseLine.setPosition(baseLinePos);
-		baseLine.setSize(baseLineSize);
 
 	}
 
-
-	// Sets elements at the centre of the frame (window) by setting the elements
-	// width from 5 to 200 && gap from 2 to 60
-	void setElements() {
-		const float globalRelativeYPos = baseLine.getPosition().y + baseLine.getLocalBounds().height;
-		const float zoomFactor = 1100;
-		const float frameWidth = frame.getLocalBounds().width;
-
-		singleElementWidth = zoomFactor / numOfElements;
-		gap = 0.2f * singleElementWidth;
-
-		float totalWidthOfElements = numOfElements * (singleElementWidth +gap) - gap;
-		float iniXPos = (frameWidth - totalWidthOfElements) / 2;
-
-		for (unsigned i{ 0 }; i < numOfElements; i++) {
-			elements[i].setRect(iniXPos + (i * (singleElementWidth + gap) ), globalRelativeYPos, singleElementWidth);
-			elements[i].setColor(unsortedElementsColor);
-		}
-
-	}
 
 	//void sleep(unsigned ms) {
 	//	clock = std::clock() + ms * CLOCKS_PER_SEC / 1000;
@@ -80,16 +55,16 @@ private:
 		leftElem.setColor(sf::Color::Yellow);
 		rightElem.setColor(sf::Color::Red);
 
-		while (leftXPos != rightXPos) {
-			leftElem.move(offset, 0);
-			rightElem.move(-offset, 0);
+		//while (leftXPos <= rightXPos) {
+		//	leftElem.move(10, 0);
+		//	rightElem.move(-10, 0);
 
-			target.clear();
-			leftElem.drawOn(target);
-			rightElem.drawOn(target);
+		//	leftElem.drawOn(target);
+		//	rightElem.drawOn(target);
+		//	target.clear();
 
-			leftXPos += offset;
-		}
+		//	leftXPos += offset;
+		//}
 
 		std::swap(leftElem, rightElem);
 
@@ -98,15 +73,34 @@ private:
 
 public:
 
-	SortFrameRenderer(sf::RenderWindow& _window) :
-		target{_window}
+	SortFrame(sf::RenderWindow& _window) :
+		target{_window},
+		frame{frameSize},
+		numOfElements{20}
 	{
 		elements = randomElementsArr.randomize();
-
 		setSortFrame();
-		//setFont();
 	}
 
+
+	// Sets elements at the centre of the frame (window) by setting the elements
+	// width from 5 to 200 && gap from 2 to 60
+	void setElements() {
+		float zoomFactor = 1100;
+		float frameWidth = frame.getLocalBounds().width;
+
+		singleElementWidth = zoomFactor / numOfElements;
+		gap = 0.2f * singleElementWidth;
+
+		float totalWidthOfElements = numOfElements * (singleElementWidth + gap) - gap;
+		float iniXPos = (frameWidth - totalWidthOfElements) / 2;
+
+		for (unsigned i{ 0 }; i < numOfElements; i++) {
+			elements[i].setRect(iniXPos + (i * (singleElementWidth + gap)), framePos.y, singleElementWidth);
+			elements[i].setColor(unsortedElementsColor);
+		}
+
+	}
 
 
 	// Insertion Algorithm
@@ -117,7 +111,7 @@ public:
 		for (unsigned i{ 1 }; i < numOfElements; i++) {
 			j = i - 1;
 
-			while (j >= 0 &&  (elements[j].getValue() > elements[j+1].getValue() ) ) {
+			while (j >= 0 &&  ( elements[j].getValue() > elements[j+1].getValue() ) ) {
 				swapElements(elements[j] , elements[j+1]);
 				--j;
 			}
@@ -129,7 +123,7 @@ public:
 	void visualizeShellSort() {
 		int j;
 
-		for (const unsigned gap : gaps) {
+		for (const unsigned gap : SHELL_GAPS) {
 			//# Do a gapped insertion sort for this gap size.
 			//# The first gap elements a[0..gap - 1] are already in gapped order keep adding one more element until the entire array is gap sorted
 
@@ -151,18 +145,14 @@ public:
 
 				j = i;
 
-				while (j >= gap && (elements[j].getValue() > elements[j - gap].getValue())) {
-					swapElements(elements[j], elements[j - gap]);
-					j -= gap;
-				}
+				//while (j >= gap && (elements[j].getValue() >= elements[j - gap].getValue())) {
+				//	swapElements(elements[j], elements[j - gap]);
+				//	j -= gap;
+				//}
 			}
 		}
 	}
 
-
-	//void updateRenderedElements() {
-
-	//}
 
 
 	// Sets number of elements to be rendered
@@ -172,14 +162,13 @@ public:
 
 
 	// Draws SortFrame 
-	void drawOn(sf::RenderWindow &window) {
-		window.draw(frame);
-		window.draw(baseLine);
+	void render() {
 
-		setElements();
+		target.draw(frame);
+		target.draw(baseLine);
 
 		for (unsigned i{ 0 }; i < numOfElements; i++) {
-			elements[i].drawOn(window);
+			elements[i].drawOn(target);
 		}
 
 	}

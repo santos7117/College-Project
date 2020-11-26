@@ -3,9 +3,7 @@
 #ifndef ELEMENT_CPP
 #define ELEMENT_CPP
 
-#include <SFML/Graphics/RectangleShape.hpp>
-#include <SFML/Graphics/RenderWindow.hpp>
-#include <SFML/Graphics/Text.hpp>
+#include "stdafx.hpp"
 
 #include "config.cpp"
 
@@ -23,7 +21,8 @@ private:
 public:
 
 	// Constructor
-	Element() {
+	Element() 
+	{
 	}
 
 	// Copy Constructor
@@ -38,10 +37,10 @@ public:
 		rect.setPosition(_x_pos, _y_pos);
 		rect.setSize(sf::Vector2f(_width, float(value)));
 
-		//label.setFont(rsc.elementNumFont);
-		//label.setString(value);
-		//label.setPosition(_x_pos, _y_pos + value);
-		//label.setCharacterSize(50);
+		label.setFont(rsc.elementNumFont);
+		label.setString(std::to_string(value));
+		label.setCharacterSize(unsigned(_width/1.5));
+		label.setPosition(_x_pos+(_width-label.getGlobalBounds().width)/2, rect.getPosition().y + rect.getGlobalBounds().height);
 	}
 
 	// Moves element
@@ -53,6 +52,7 @@ public:
 	void setColor(sf::Color _color = sf::Color::Blue) {
 		color = _color;
 		rect.setFillColor(_color);
+		label.setFillColor(_color);
 	}
 
 	// Sets value for the element
@@ -74,31 +74,29 @@ public:
 	// Draws element with label on window
 	void drawOn(sf::RenderWindow& window) const{
 		window.draw(rect);
-		//window.draw(label);
+		window.draw(label);
 	}
 
-	friend bool operator > (Element &leftElem, Element &rightElem);
-	friend bool operator >= (Element &leftElem, Element &rightElem);
-	friend bool operator < (Element &leftElem, Element &rightElem);
-	friend bool operator <= (Element &leftElem, Element &rightElem);
+	friend bool operator >  (Element& leftElem, Element& rightElem) 
+	{
+		return leftElem.value > rightElem.value;
+	}
+
+	friend bool operator >= (Element &leftElem, Element &rightElem)
+	{
+		return leftElem.value >= rightElem.value;
+	}
+
+	friend bool operator <  (Element &leftElem, Element &rightElem)
+	{
+		return leftElem.value < rightElem.value;
+	}
+
+	friend bool operator <= (Element &leftElem, Element &rightElem)
+	{
+		return leftElem.value <= rightElem.value;
+	}
 };
-
-//bool operator > (Element &leftElem, Element &rightElem) {
-//	return leftElem.value > rightElem.value;
-//}
-//
-//bool operator >= (Element &leftElem, Element &rightElem) {
-//	return leftElem.value >= rightElem.value;
-//}
-//
-//bool operator < (Element &leftElem, Element &rightElem) {
-//	return leftElem.value < rightElem.value;
-//}
-//
-//bool operator <= (Element &leftElem, Element &rightElem) {
-//	return leftElem.value <= rightElem.value;
-//}
-
 
 
 #endif
