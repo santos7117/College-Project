@@ -1,7 +1,9 @@
 #pragma once
 
-#ifndef _config_CPP
-#define _config_CPP
+#ifndef _config_HPP
+#define _config_HPP
+
+#include "stdafx.hpp"
 
 #include "ResourceHolder.hpp"
 

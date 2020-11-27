@@ -20,6 +20,10 @@ public:
 
 	void setState(const enum BTN_STATE& _state);
 
+	float getWidth() const;
+
+	float getHeight() const;
+
 	void updateBtnUI();
 
 	bool onClick();

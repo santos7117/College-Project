@@ -16,6 +16,10 @@ void Button::setPosition(const float& _x, const float& _y)
 
 void Button::setState(const enum BTN_STATE& _state) { btnState = _state; }
 
+float Button::getWidth() const { return btnTitle.getGlobalBounds().width; }
+
+float Button::getHeight() const { return btnTitle.getGlobalBounds().height; }
+
 void Button::updateBtnUI()
 {
 	switch (btnState)

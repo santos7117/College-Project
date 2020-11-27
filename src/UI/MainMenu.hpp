@@ -5,6 +5,7 @@
 
 
 #include "../config.hpp"
+#include "Button.hpp"
 
 
 class MainMenu 
@@ -15,16 +16,15 @@ private:
 	sf::Sprite background;
 
 	sf::Text appTitleText;
-	sf::Text sortOptionText;
-	sf::Text treeOptionText;
-	sf::Text exitOptionText;
-
-
-public:
-	MainMenu(sf::RenderWindow& _window);
-
+	Button sortOptionText;
+	Button treeOptionText;
+	Button exitOptionText;
 
 	void setUp();
+
+public:
+	MainMenu(sf::RenderWindow&);
+
 
 	void updateMouseEvents();
 
@@ -32,11 +32,6 @@ public:
 
 	void render();
 };
-
-
-
-
-
 
 
 #endif

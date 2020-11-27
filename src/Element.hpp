@@ -36,7 +36,7 @@ public:
 	void move(float& offsetX, float& offsetY);
 
 	// Sets color of element and element's rectangle
-	void setColor(sf::Color _color = sf::Color::Blue);
+	void setColor(sf::Color _color);
 
 	// Sets value for the element
 	void setValue(unsigned _val);

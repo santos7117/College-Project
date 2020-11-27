@@ -1,31 +1,30 @@
-#include "stdafx.hpp"
-
+//#include "stdafx.hpp"
+//#include <iostream>
 //#include "config.hpp"
 //#include "./UI/PausePlayIndicator.cpp"
-#include "SortApp.cpp"
-//#include "./UI/MainMenu.cpp"
+//#include "SortApp.cpp"
+#include "./UI/MainMenu.hpp"
 //#include "./UI/SplashScreen.cpp"
-
-
-
 
 
 int main()
 {
 	sf::RenderWindow window(SCR_DIMENSIONS, "Visualizer");
-	//sf::Event event;
-	//PausePlayIndicator pauseIndicator;
 	window.setFramerateLimit(10);
-	SortApp app = SortApp(window);
+	sf::Event event;
+	//PausePlayIndicator pauseIndicator;
+	//SortApp app = SortApp(window);
+	float mouseX, mouseY;
+
+	MainMenu menu(window);
 
 
 	while (window.isOpen()) 
 	{
 
+		menu.updateEvents();
 
-		app.update();
-
-		app.render();
+		menu.render();
 
 	}
 

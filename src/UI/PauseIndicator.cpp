@@ -32,4 +32,3 @@ void PauseIndicator::renderOn(sf::RenderWindow& _window) const
 {	
 	_window.draw(sprite);
 }
-};
