@@ -1,121 +1,103 @@
-//#include "../stdafx.hpp"
-#pragma once 
+#include "../stdafx.hpp"
 
-//#ifndef _MAIN_MENU_CPP
-//#define _MAIN_MENU_CPP
+#include "MainMenu.hpp"
 
 
-#include "../config.cpp"
+MainMenu::MainMenu(sf::RenderWindow& _window) :
+	targetWindow{_window},
 
-class MainMenu {
-private:
-	sf::Event mainMenuEvent;
-	sf::RenderWindow& targetWindow;
-	sf::Sprite background;
+	background{rsc.mainmenuBackgroundTexture},
 
-	sf::Text appTitleText;
-	sf::Text sortOptionText;
-	sf::Text treeOptionText;
-	sf::Text exitOptionText;
+	appTitleText  {		 "VISUALIZER"	 , rsc.menuFont, 150 },
+	sortOptionText{ "Sort  Visualization", rsc.menuFont,  80 },
+	treeOptionText{ "Tree  Visualization", rsc.menuFont,  80 },
+	exitOptionText{			"Exit"		 , rsc.menuFont, 100 }
+{
+	setUp();
+}
 
 
-public:
-	MainMenu(sf::RenderWindow& _window) :
-		targetWindow{_window},
+void MainMenu::setUp() 
+{
+	background.setPosition(0.f, 0.f);
+	background.setScale(0.55f, 0.5f);
 
-		background{rsc.mainmenuBackgroundTexture},
+	appTitleText.setFont  (rsc.menuFont);
+	sortOptionText.setFont(rsc.menuFont);
+	treeOptionText.setFont(rsc.menuFont);
+	exitOptionText.setFont(rsc.menuFont);
 
-		appTitleText  {		 "VISUALIZER"	 , rsc.menuFont, 150 },
-		sortOptionText{ "Sort  Visualization", rsc.menuFont,  80 },
-		treeOptionText{ "Tree  Visualization", rsc.menuFont,  80 },
-		exitOptionText{			"Exit"		 , rsc.menuFont, 100 }
+	appTitleText.setPosition  ((SCR_WIDTH - appTitleText.getLocalBounds().width) / 2.f  ,  50.f);
+	sortOptionText.setPosition((SCR_WIDTH - sortOptionText.getLocalBounds().width) / 2.f, 300.f);
+	treeOptionText.setPosition((SCR_WIDTH - treeOptionText.getLocalBounds().width) / 2.f, 400.f);
+	exitOptionText.setPosition((SCR_WIDTH - exitOptionText.getLocalBounds().width) / 2.f, 750.f);
+}
+
+void MainMenu::updateMouseEvents() 
+{
+	float mouseX = float(sf::Mouse::getPosition(targetWindow).x);
+	float mouseY = float(sf::Mouse::getPosition(targetWindow).y);
+
+	if (sortOptionText.getGlobalBounds().contains(mouseX, mouseY)) 
 	{
-		setUp();
+		sortOptionText.setScale(1.1f, 1.1f);
+
+		if (mainMenuEvent.type == sf::Mouse::Left) {
+			targetWindow.close();
+		}
 	}
+	else
+		sortOptionText.setScale(1.f, 1.f);
 
+	if (treeOptionText.getGlobalBounds().contains(mouseX, mouseY)) 
+	{
+		treeOptionText.setScale(1.1f, 1.1f);
 
-	void setUp() {
-		background.setPosition(0.f, 0.f);
-		background.setScale(0.55f, 0.5f);
-
-		appTitleText.setFont  (rsc.menuFont);
-		sortOptionText.setFont(rsc.menuFont);
-		treeOptionText.setFont(rsc.menuFont);
-		exitOptionText.setFont(rsc.menuFont);
-
-		appTitleText.setPosition  ((SCR_WIDTH - appTitleText.getLocalBounds().width) / 2.f  , 50.f);
-		sortOptionText.setPosition((SCR_WIDTH - sortOptionText.getLocalBounds().width) / 2.f, 300.f);
-		treeOptionText.setPosition((SCR_WIDTH - treeOptionText.getLocalBounds().width) / 2.f, 400.f);
-		exitOptionText.setPosition((SCR_WIDTH - exitOptionText.getLocalBounds().width) / 2.f, 750.f);
+		if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left)) {
+			targetWindow.close();
+		}
 	}
+	else
+		treeOptionText.setScale(1.f, 1.f);
 
-	void updateMouseEvents() {
-		float mouseX = float(sf::Mouse::getPosition(targetWindow).x);
-		float mouseY = float(sf::Mouse::getPosition(targetWindow).y);
+	if (exitOptionText.getGlobalBounds().contains(mouseX, mouseY)) 
+	{
+		exitOptionText.setScale(1.1f, 1.1f);
 
-		if (sortOptionText.getGlobalBounds().contains(mouseX, mouseY)) 
-		{
-			sortOptionText.setScale(1.1f, 1.1f);
+		if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left)) {
+			targetWindow.close();
+		}
+	}
+	else
+		exitOptionText.setScale(1.f, 1.f);
+}
 
-			if (mainMenuEvent.type == sf::Mouse::Left) {
+void MainMenu::updateEvents() 
+{
+	while (targetWindow.pollEvent(mainMenuEvent)) {
+		switch (mainMenuEvent.type) {
+			case sf::Event::Closed :
 				targetWindow.close();
-			}
-		}
-		else
-			sortOptionText.setScale(1.f, 1.f);
+				break;
 
-		if (treeOptionText.getGlobalBounds().contains(mouseX, mouseY)) 
-		{
-			treeOptionText.setScale(1.1f, 1.1f);
-
-			if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left)) {
-				targetWindow.close();
-			}
-		}
-		else
-			treeOptionText.setScale(1.f, 1.f);
-
-		if (exitOptionText.getGlobalBounds().contains(mouseX, mouseY)) 
-		{
-			exitOptionText.setScale(1.1f, 1.1f);
-
-			if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left)) {
-				targetWindow.close();
-			}
-		}
-		else
-			exitOptionText.setScale(1.f, 1.f);
-	}
-
-	void updateEvents() {
-		while (targetWindow.pollEvent(mainMenuEvent)) {
-			switch (mainMenuEvent.type) {
-				case sf::Event::Closed :
-					targetWindow.close();
-					break;
-
-				case sf::Event::MouseMoved:
-					updateMouseEvents();
-					break;
-			}
+			case sf::Event::MouseMoved:
+				updateMouseEvents();
+				break;
 		}
 	}
+}
 
-	void render() {
-		targetWindow.clear();
+void MainMenu::render() 
+{
+	targetWindow.clear();
 
-		targetWindow.draw(background);
+	targetWindow.draw(background);
 
-		targetWindow.draw(appTitleText);
-		targetWindow.draw(sortOptionText);
-		targetWindow.draw(treeOptionText);
-		targetWindow.draw(exitOptionText);
+	targetWindow.draw(appTitleText);
+	targetWindow.draw(sortOptionText);
+	targetWindow.draw(treeOptionText);
+	targetWindow.draw(exitOptionText);
 
-		targetWindow.display();
-	}
+	targetWindow.display();
+}
 };
-
-
-
-
-//#endif

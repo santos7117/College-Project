@@ -1,11 +1,9 @@
 #pragma once
 
-//#ifndef _config_CPP
-//#define _config_CPP
+#ifndef _config_CPP
+#define _config_CPP
 
-#include "stdafx.hpp"
-
-#include "ResourceHolder.cpp"
+#include "ResourceHolder.hpp"
 
 
 
@@ -50,4 +48,4 @@ const static sf::Color themeColor = sf::Color(52, 80, 92);
 const static size_t ARR_SIZE = 150;
 const static unsigned RANGE = 550;
 
-//#endif
+#endif

@@ -1,6 +1,6 @@
 #include "stdafx.hpp"
 
-#include "config.cpp"
+//#include "config.hpp"
 //#include "./UI/PausePlayIndicator.cpp"
 #include "SortApp.cpp"
 //#include "./UI/MainMenu.cpp"
