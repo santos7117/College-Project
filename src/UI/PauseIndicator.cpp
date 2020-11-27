@@ -16,7 +16,7 @@ void PauseIndicator::setState(const bool& _state) {	pauseStatus = _state; }
 
 void PauseIndicator::reverseState() { pauseStatus = !pauseStatus; }
 
-constexpr bool PauseIndicator::isPaused() const { return pauseStatus; }
+bool PauseIndicator::isPaused() const { return pauseStatus; }
 
 void PauseIndicator::updateIcon() 
 {

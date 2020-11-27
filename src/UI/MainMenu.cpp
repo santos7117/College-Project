@@ -9,9 +9,9 @@ MainMenu::MainMenu(sf::RenderWindow& _window) :
 	background{rsc.mainmenuBackgroundTexture},
 
 	appTitleText  {		 "VISUALIZER"	 , rsc.menuFont, 170 },
-	sortOptionText{ "Sort  Visualization", rsc.menuFont,  80 },
-	treeOptionText{ "Tree  Visualization", rsc.menuFont,  80 },
-	exitOptionText{			"Exit"		 , rsc.menuFont, 100 }
+	sortOption{ "Sort  Visualization", rsc.menuFont,  80 },
+	treeOption{ "Tree  Visualization", rsc.menuFont,  80 },
+	exitOption{			"Exit"		 , rsc.menuFont, 100 }
 {
 	setUp();
 }
@@ -23,9 +23,9 @@ void MainMenu::setUp()
 	background.setScale(0.57f, 0.5f);
 
 	appTitleText.setPosition  ((SCR_WIDTH - appTitleText.getGlobalBounds().width) / 2.f  ,  50.f);
-	sortOptionText.setPosition((SCR_WIDTH - sortOptionText.getWidth()) / 2.f, 300.f);
-	treeOptionText.setPosition((SCR_WIDTH - treeOptionText.getWidth()) / 2.f, 400.f);
-	exitOptionText.setPosition((SCR_WIDTH - exitOptionText.getWidth()) / 2.f, 750.f);
+	sortOption.setPosition((SCR_WIDTH - sortOption.getWidth()) / 2.f, 300.f);
+	treeOption.setPosition((SCR_WIDTH - treeOption.getWidth()) / 2.f, 400.f);
+	exitOption.setPosition((SCR_WIDTH - exitOption.getWidth()) / 2.f, 750.f);
 }
 
 void MainMenu::updateMouseEvents() 
@@ -33,11 +33,11 @@ void MainMenu::updateMouseEvents()
 	float mouseX = float(sf::Mouse::getPosition(targetWindow).x);
 	float mouseY = float(sf::Mouse::getPosition(targetWindow).y);
 
-	sortOptionText.update(mouseX, mouseY);
-	treeOptionText.update(mouseX, mouseY);
-	exitOptionText.update(mouseX, mouseY);
+	sortOption.update(mouseX, mouseY);
+	treeOption.update(mouseX, mouseY);
+	exitOption.update(mouseX, mouseY);
 
-	if (sortOptionText.onClick())
+	if (sortOption.onClick())
 		targetWindow.close();
 }
 
@@ -63,9 +63,9 @@ void MainMenu::render()
 	targetWindow.draw(background);
 
 	targetWindow.draw(appTitleText);
-	sortOptionText.renderOn(targetWindow);
-	treeOptionText.renderOn(targetWindow);
-	exitOptionText.renderOn(targetWindow);
+	sortOption.renderOn(targetWindow);
+	treeOption.renderOn(targetWindow);
+	exitOption.renderOn(targetWindow);
 
 	targetWindow.display();
 }

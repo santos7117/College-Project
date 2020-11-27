@@ -12,8 +12,10 @@ SplashScreen::SplashScreen(sf::RenderWindow& _window) :
 
 }
 
-void SplashScreen::updateEvents() {
-	while (target.pollEvent(splashEvent)) {
+void SplashScreen::updateEvents()
+{
+	while (target.pollEvent(splashEvent)) 
+	{
 		switch (splashEvent.type) {
 			case sf::Event::Closed:
 				target.close();
@@ -29,7 +31,8 @@ void SplashScreen::updateEvents() {
 
 }
 
-void SplashScreen::play() {
+void SplashScreen::play()
+{
 	target.clear();
 
 	target.draw(splashBackground);

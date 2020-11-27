@@ -16,9 +16,9 @@ private:
 	sf::Sprite background;
 
 	sf::Text appTitleText;
-	Button sortOptionText;
-	Button treeOptionText;
-	Button exitOptionText;
+	Button sortOption;
+	Button treeOption;
+	Button exitOption;
 
 	void setUp();
 

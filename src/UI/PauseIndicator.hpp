@@ -19,7 +19,7 @@ public:
 
 	void reverseState();
 
-	constexpr bool isPaused() const;
+	bool isPaused() const;
 
 	void updateIcon();
 

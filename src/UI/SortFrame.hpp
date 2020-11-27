@@ -1,7 +1,7 @@
 #pragma once
 
-#ifndef _SORT_FRAME_CPP
-#define _SORT_FRAME_CPP
+#ifndef _SORT_FRAME_HPP
+#define _SORT_FRAME_HPP
 
 #include "../Element.hpp"
 #include "../RandomArrayGenerator.hpp"
@@ -21,7 +21,6 @@ private:
 	std::array <Element, ARR_SIZE> elements;
 
 
-
 	//unsigned sleepTime = .5;
 	//std::clock_t clock;
 
@@ -32,8 +31,6 @@ private:
 
 	//	}
 	//}
-
-
 
 	void setSortFrame();
 

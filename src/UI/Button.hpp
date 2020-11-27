@@ -13,18 +13,21 @@ private:
 	short unsigned btnState;
 	sf::Text btnTitle;
 
+	void updateBtnUI();
+
+
 public:
 	Button(const sf::String& string, const sf::Font& font, unsigned int characterSize);
 
 	void setPosition(const float& _x, const float& _y);
 
-	void setState(const enum BTN_STATE& _state);
+	void setPosition(const sf::Vector2f& _pos);
+
+	//void setState(const enum BTN_STATE& _state);
 
 	float getWidth() const;
 
 	float getHeight() const;
-
-	void updateBtnUI();
 
 	bool onClick();
 

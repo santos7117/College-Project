@@ -9,16 +9,15 @@ Button::Button(const sf::String& string, const sf::Font& font, unsigned int char
 
 }
 
-void Button::setPosition(const float& _x, const float& _y)
-{
-	btnTitle.setPosition(_x, _y);
-}
+void Button::setPosition(const float& _x, const float& _y) {	btnTitle.setPosition(_x, _y);	}
 
-void Button::setState(const enum BTN_STATE& _state) { btnState = _state; }
+void Button::setPosition(const sf::Vector2f& _pos)		   {	btnTitle.setPosition(_pos);		}
 
-float Button::getWidth() const { return btnTitle.getGlobalBounds().width; }
+//void Button::setState(const enum BTN_STATE& _state) {	btnState = _state;	 }
 
-float Button::getHeight() const { return btnTitle.getGlobalBounds().height; }
+float Button::getWidth() const  {	return btnTitle.getGlobalBounds().width;	}
+
+float Button::getHeight() const {	return btnTitle.getGlobalBounds().height;	}
 
 void Button::updateBtnUI()
 {
@@ -32,7 +31,6 @@ void Button::updateBtnUI()
 		break;
 	case BTN_CLICKED:
 		btnTitle.setScale(1.f, 1.f);
-	default:
 		break;
 	}
 }
