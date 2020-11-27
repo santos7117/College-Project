@@ -4,6 +4,7 @@
 
 
 #include "UI/SortFrameRenderer.cpp"
+#include "UI/PausePlayIndicator.cpp"
 
 
 
@@ -24,7 +25,7 @@ private:
 	SortFrame sortFrame;
 	sf::RectangleShape btmNavBar;
 
-	bool isPaused;
+	PauseIndicator pauseIndicator;
 
 
 
@@ -49,10 +50,10 @@ public:
 
 		sortFrame{ targetWindow }, 
 
-		btmNavBar{ btmNavBarSize},
+		btmNavBar{ btmNavBarSize}
 
 
-		isPaused{0}
+		
 
 	// Constructor Body
 	{
@@ -79,7 +80,7 @@ public:
 		sf::Vector2f backBtnTextPos{ iniTopNavLine.y, iniTopNavLine.y };
 		sf::Vector2f insertionSortBtnTextPos{ iniTopNavLine.x + backBtnText.getLocalBounds().width + 5.f, iniTopNavLine.y };
 		sf::Vector2f shellSortBtnTextPos{ insertionSortBtnTextPos.x + insertionSortBtnText.getGlobalBounds().width + 45.f, iniTopNavLine.y };
-		sf::Vector2f genNewArrBtnTextPos{ (topNavBarSize.x - genNewArrBtnText.getLocalBounds().width - 10.f), iniTopNavLine.y - 10.f };
+		sf::Vector2f genNewArrBtnTextPos{ (topNavBarSize.x - genNewArrBtnText.getLocalBounds().width - 15.f), iniTopNavLine.y - 10.f };
 		sf::Vector2f minusBtnPos{ genNewArrBtnTextPos.x - minusBtn.getGlobalBounds().width - 35.f, iniTopNavLine.y - 20.f };
 		sf::Vector2f plusBtnPos{ minusBtnPos.x - plusBtn.getGlobalBounds().width - 5.f, minusBtnPos.y };
 
@@ -97,43 +98,34 @@ public:
 	}
 
 	// Handles pause state
-	void handlePause() {
-		while (isPaused) {
-			updateEvents();
-		}
-	}
-
-	void handleShortcuts()
+	void handlePause()
 	{
-		while (targetWindow.pollEvent(event))
-		{
-			if (event.type == event.key.code)
+		while (pauseIndicator.isPaused()) {
+			while (targetWindow.pollEvent(event))
 			{
-				switch (event.key.code) 
-				{
+				switch (event.type) {
 
-					// Shortcuts :- 
-					// I -> Insertion Sort Visualization
-					// S -> Shell Sort Visualization
-
-				case sf::Keyboard::I:
-					sortFrame.visualizeInsertion();
+					// handles window close event
+				case sf::Event::Closed:
+					targetWindow.close();
 					break;
 
+				case sf::Event::KeyPressed:
+					switch (event.key.code)
+					{
+					case sf::Keyboard::P:
+						pauseIndicator.reverseState();
+						pauseIndicator.updateIcon();
+						break;
 
-				case sf::Keyboard::S:
-					sortFrame.visualizeShellSort();
-					break;
-
-				case sf::Keyboard::P:
-					isPaused = !isPaused;
-					handlePause();
+					}
 					break;
 
 				}
 			}
 		}
 	}
+
 
 	void updateEvents() 
 	{
@@ -145,6 +137,32 @@ public:
 				case sf::Event::Closed:
 					targetWindow.close();
 					break;
+
+				case sf::Event::KeyPressed:
+					switch (event.key.code)
+					{
+
+						// Shortcuts :- 
+						// I -> Insertion Sort Visualization
+						// S -> Shell Sort Visualization
+
+					case sf::Keyboard::I:
+						sortFrame.visualizeInsertion();
+						break;
+
+
+					case sf::Keyboard::S:
+						sortFrame.visualizeShellSort();
+						break;
+
+					case sf::Keyboard::P:
+						pauseIndicator.reverseState();
+						pauseIndicator.updateIcon();
+						handlePause();
+						break;
+
+					}
+					break;
 				
 			}
 		}
@@ -153,10 +171,7 @@ public:
 	void update()
 	{
 		updateEvents();
-
-		handleShortcuts();
-
-
+		pauseIndicator.updateIcon();
 	}
 
 
@@ -176,10 +191,12 @@ public:
 	}
 
 	// Draws all App Components on window
-	void render() {
-		targetWindow.clear();
+	void render() 
+	{
+		targetWindow.clear(sf::Color::Cyan);
 
 		renderNavBar();
+		pauseIndicator.renderOn(targetWindow);
 
 		sortFrame.render();
 

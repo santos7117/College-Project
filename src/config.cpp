@@ -33,6 +33,8 @@ const static sf::Color themeColor = sf::Color(52, 80, 92);
 
 
 	// SortFrame Configuration
+	const static unsigned zoomFactor = 1100;
+
 	const static sf::Vector2f framePos  = sf::Vector2f(0, topNavBarPos.y + topNavBarSize.y);
 	const static sf::Vector2f frameSize = sf::Vector2f(SCR_WIDTH, 700.f);
 	const static sf::Color frameBorderColor = sf::Color(192, 192, 225);

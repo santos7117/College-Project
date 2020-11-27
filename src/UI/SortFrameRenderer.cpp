@@ -11,28 +11,18 @@ class SortFrame
 {
 private:
 	sf::RenderWindow& target;
-	//unsigned sleepTime = .5;
-	//std::clock_t clock;
 
-	sf::RectangleShape baseLine;
 	sf::RectangleShape frame;
 	unsigned numOfElements;
+	float singleElementWidth;
 
 	RandomArrayGenerator randomElementsArr;
 	std::array <Element, ARR_SIZE> elements;
 
-	float singleElementWidth;
-	float gap;
-
-	void setSortFrame() {
-		frame.setFillColor(themeColor);
-		frame.setPosition(framePos);
-		frame.setOutlineColor(frameBorderColor);
-		frame.setOutlineThickness(1.f);
 
 
-	}
-
+	//unsigned sleepTime = .5;
+	//std::clock_t clock;
 
 	//void sleep(unsigned ms) {
 	//	clock = std::clock() + ms * CLOCKS_PER_SEC / 1000;
@@ -44,13 +34,20 @@ private:
 
 
 
+	void setSortFrame() 
+	{
+		frame.setFillColor(themeColor);
+		frame.setPosition(framePos);
+		frame.setOutlineColor(frameBorderColor);
+		frame.setOutlineThickness(1.f);
+	}
 
 
 	// Swaps elements with animation while sorting
 	void swapElements(Element& leftElem, Element& rightElem) {
 		float leftXPos = leftElem.getXPos();
 		float rightXPos = rightElem.getXPos();
-		float offset = singleElementWidth + gap;
+		//float offset = singleElementWidth + gap;
 
 		leftElem.setColor(sf::Color::Yellow);
 		rightElem.setColor(sf::Color::Red);
@@ -76,24 +73,22 @@ public:
 	SortFrame(sf::RenderWindow& _window) :
 		target{_window},
 		frame{frameSize},
-		numOfElements{20}
+		numOfElements{20},
+		elements{randomElementsArr.randomize()}
 	{
-		elements = randomElementsArr.randomize();
 		setSortFrame();
 	}
 
 
 	// Sets elements at the centre of the frame (window) by setting the elements
 	// width from 5 to 200 && gap from 2 to 60
-	void setElements() {
-		float zoomFactor = 1100;
-		float frameWidth = frame.getLocalBounds().width;
-
-		singleElementWidth = zoomFactor / numOfElements;
-		gap = 0.2f * singleElementWidth;
+	void setElements() 
+	{
+		singleElementWidth = float (zoomFactor / numOfElements);
+		float gap = 0.2f * singleElementWidth;
 
 		float totalWidthOfElements = numOfElements * (singleElementWidth + gap) - gap;
-		float iniXPos = (frameWidth - totalWidthOfElements) / 2;
+		float iniXPos = (frame.getLocalBounds().width - totalWidthOfElements) / 2;
 
 		for (unsigned i{ 0 }; i < numOfElements; i++) {
 			elements[i].setRect(iniXPos + (i * (singleElementWidth + gap)), framePos.y, singleElementWidth);
@@ -111,7 +106,7 @@ public:
 		for (unsigned i{ 1 }; i < numOfElements; i++) {
 			j = i - 1;
 
-			while (j >= 0 &&  ( elements[j].getValue() > elements[j+1].getValue() ) ) {
+			while (j >= 0 &&  ( elements[j] > elements[j+1] ) ) {
 				swapElements(elements[j] , elements[j+1]);
 				--j;
 			}
@@ -156,16 +151,13 @@ public:
 
 
 	// Sets number of elements to be rendered
-	void setNumOfElements(unsigned& _renderedElements) {
-		numOfElements = _renderedElements;
-	}
+	void setNumOfElements(unsigned& _renderedElements) {	numOfElements = _renderedElements;	}
 
 
 	// Draws SortFrame 
-	void render() {
-
+	void render() 
+	{
 		target.draw(frame);
-		target.draw(baseLine);
 
 		for (unsigned i{ 0 }; i < numOfElements; i++) {
 			elements[i].drawOn(target);

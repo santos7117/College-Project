@@ -33,7 +33,8 @@ public:
 
 
 	// Sets rectangle's position and size for the element
-	void setRect(const float &_x_pos, const float &_y_pos, const float &_width) {
+	void setRect(const float &_x_pos, const float &_y_pos, const float &_width) 
+	{
 		rect.setPosition(_x_pos, _y_pos);
 		rect.setSize(sf::Vector2f(_width, float(value)));
 
@@ -44,9 +45,7 @@ public:
 	}
 
 	// Moves element
-	void move(float offsetX, float offsetY) {
-		rect.move(offsetX, offsetY);
-	}
+	void move(float& offsetX, float& offsetY) {	rect.move(offsetX, offsetY);	}
 
 	// Sets color of element and element's rectangle
 	void setColor(sf::Color _color = sf::Color::Blue) {
@@ -56,20 +55,14 @@ public:
 	}
 
 	// Sets value for the element
-	void setValue(unsigned _val) {
-		value = _val;
-	}
+	void setValue(unsigned _val) {	value = _val;	}
 
 	// Returns value of the element
-	unsigned getValue() {
-		return value;
-	}
+	unsigned getValue() const {	return value;	}
 
 
 	// Returns X position of the element
-	float getXPos() {
-		return rect.getPosition().x;
-	}
+	float getXPos() const {	return rect.getPosition().x;	}
 
 	// Draws element with label on window
 	void drawOn(sf::RenderWindow& window) const{
@@ -77,25 +70,13 @@ public:
 		window.draw(label);
 	}
 
-	friend bool operator >  (Element& leftElem, Element& rightElem) 
-	{
-		return leftElem.value > rightElem.value;
-	}
+	friend bool operator >  (Element& leftElem, Element& rightElem) {	return leftElem.value >  rightElem.value;	}
 
-	friend bool operator >= (Element &leftElem, Element &rightElem)
-	{
-		return leftElem.value >= rightElem.value;
-	}
+	friend bool operator >= (Element &leftElem, Element &rightElem)	{	return leftElem.value >= rightElem.value;	}
 
-	friend bool operator <  (Element &leftElem, Element &rightElem)
-	{
-		return leftElem.value < rightElem.value;
-	}
+	friend bool operator <  (Element &leftElem, Element &rightElem)	{	return leftElem.value <  rightElem.value;	}
 
-	friend bool operator <= (Element &leftElem, Element &rightElem)
-	{
-		return leftElem.value <= rightElem.value;
-	}
+	friend bool operator <= (Element &leftElem, Element &rightElem)	{	return leftElem.value <= rightElem.value;	}
 };
 
 
