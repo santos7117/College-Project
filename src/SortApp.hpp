@@ -38,14 +38,14 @@ private:
 	//
 
 	sf::Clock deltaClock;
-	sf::Int32 dt;
-	float animationSpeed;
+	sf::Int64 dt;
+	double animationSpeed;
 
 	void setSortFrame();
 
 	// Sets elements at the centre of the frame (window) by setting the elements
 	// width from 5 to 200 && gap from 2 to 60
-	void arrangeElements();
+	void alignElements();
 
 	void randomize();
 
@@ -67,7 +67,7 @@ private:
 	void updateMovement(Element&, Element&);
 
 	// Swaps elements with animation while sorting
-	void swapElements(Element& leftElem, Element& rightElem);
+	void swapElements(Element& leftElem, Element& rightElem, bool);
 
 
 	// Navigation Bar class

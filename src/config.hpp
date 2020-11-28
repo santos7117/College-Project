@@ -38,8 +38,11 @@ const static sf::Color themeColor = sf::Color(52, 80, 92);
 	const static sf::Vector2f framePos  = sf::Vector2f(0, topNavBarPos.y + topNavBarSize.y);
 	const static sf::Vector2f frameSize = sf::Vector2f(SCR_WIDTH, 740.f);
 	const static sf::Color frameBorderColor = sf::Color(192, 192, 225);
-	const static sf::Color sortedElementsColor	 = sf::Color::Green;
+	const static sf::Color leftUnsortedColor = sf::Color(190, 191, 88);
+	const static sf::Color rightUnsortedColor = sf::Color(204, 86, 86);
+	const static sf::Color sortedElementsColor	 = sf::Color(124, 254, 0);
 	const static sf::Color unsortedElementsColor = sf::Color(169, 169, 169);
+	const static sf::Color gapSortedColor = sf::Color(64, 128, 0);
 
 
 	// Bottom Navigation Bar

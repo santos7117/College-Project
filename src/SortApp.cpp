@@ -21,7 +21,7 @@ SortApp::SortApp(sf::RenderWindow& _window) :
 	btmNavBar{ btmNavBarSize},
 
 	sortFrame{ frameSize },
-	numOfElements{ 20 },
+	numOfElements{ 4 },
 	elements{ randomElementsArr.randomize() },
 	animationSpeed{0.0001}
 
@@ -29,7 +29,7 @@ SortApp::SortApp(sf::RenderWindow& _window) :
 {
 	setNavBars();
 	setSortFrame();
-	arrangeElements();
+	alignElements();
 }
 
 
@@ -78,26 +78,48 @@ void SortApp::setSortFrame()
 
 
 // Swaps elements with animation while sorting
-void SortApp::swapElements(Element& leftElem, Element& rightElem) {
-	float offset = 1.2f * singleElementWidth;
+void SortApp::swapElements(Element& leftElem, Element& rightElem, bool optimize = 0) {
+	const float animationDistance = rightElem.getXPos();
 
-	leftElem.setColor(sf::Color::Yellow);
-	rightElem.setColor(sf::Color::Red);
+	if (optimize)
+	{
+		leftElem. setColor(leftUnsortedColor);
+		rightElem.setColor(rightUnsortedColor);
 
-	while (leftElem.getXPos() <= rightElem.getXPos() + singleElementWidth) {
-		updateEvents();
-		leftElem.move ( animationSpeed * dt, 0.f);
-		rightElem.move(-animationSpeed * dt, 0.f);
-		targetWindow.clear();
-		renderNavBar();
-		renderElements();
-		targetWindow.display();
+		while (leftElem.getXPos() < animationDistance) {
+			updateEvents();
+			leftElem. move( animationSpeed * dt, 0.f);
+			rightElem.move(-animationSpeed * dt, 0.f);
+			targetWindow.clear();
+			renderNavBar();
+			renderElements();
+			targetWindow.display();
+		}
+
+		std::swap(leftElem, rightElem);
+		leftElem. setColor(gapSortedColor);
+		rightElem.setColor(gapSortedColor);
+		alignElements();
 	}
+	else
+	{
+		leftElem. setColor(leftUnsortedColor);
+		rightElem.setColor(rightUnsortedColor);
 
-	std::swap(leftElem, rightElem);
-	leftElem.setColor(sf::Color::Green);
-	rightElem.setColor(sf::Color::Green);
-	arrangeElements();
+		while (leftElem.getXPos() <= animationDistance) {
+			updateEvents();
+			leftElem. move( animationSpeed * dt, 0.f);
+			rightElem.move(-animationSpeed * dt, 0.f);
+			targetWindow.clear();
+			renderNavBar();
+			renderElements();
+			targetWindow.display();
+		}
+
+		std::swap(leftElem, rightElem);
+		leftElem.setColor(sortedElementsColor);
+		alignElements();
+	}
 }
 
 //void SortFrame::updateMovement(Element& leftElem, Element& rightElem)
@@ -108,7 +130,7 @@ void SortApp::swapElements(Element& leftElem, Element& rightElem) {
 
 // Sets elements at the centre of the frame (window) by setting the elements
 // width from 5 to 200 && gap from 2 to 60
-void SortApp::arrangeElements()
+void SortApp::alignElements()
 {
 	singleElementWidth = float(zoomFactor / numOfElements);
 	float gap = 0.2f * singleElementWidth;
@@ -116,7 +138,8 @@ void SortApp::arrangeElements()
 	float totalWidthOfElements = numOfElements * (singleElementWidth + gap) - gap;
 	float iniXPos = (sortFrame.getLocalBounds().width - totalWidthOfElements) / 2;
 
-	for (unsigned i{ 0 }; i < numOfElements; i++) {
+	for (unsigned i{ 0 }; i < numOfElements; i++) 
+	{
 		elements[i].setRect(iniXPos + (i * (singleElementWidth + gap)), framePos.y, singleElementWidth);
 	}
 
@@ -125,7 +148,7 @@ void SortApp::arrangeElements()
 void SortApp::randomize()
 {
 	elements = randomElementsArr.randomize();
-	arrangeElements();
+	alignElements();
 }
 
 
@@ -134,7 +157,8 @@ void SortApp::randomize()
 void SortApp::visualizeInsertion() {
 	int j;
 
-	for (unsigned i{ 1 }; i < numOfElements; i++) {
+	for (unsigned i{ 1 }; i < numOfElements; i++) 
+	{
 		j = i - 1;
 
 		while (j >= 0 && (elements[j] > elements[j + 1])) {
@@ -142,19 +166,24 @@ void SortApp::visualizeInsertion() {
 			--j;
 		}
 	}
+
+	for (unsigned i{ 0 }; i<numOfElements; ++i)
+		elements[i].setColor(sortedElementsColor);
 }
 
 
 // Shell Sort Algorithm
 void SortApp::visualizeShellSort() {
-	int j;
-
-	for (const unsigned gap : SHELL_GAPS) {
+	for (const unsigned& gap : SHELL_GAPS) 
+	{
 		//# Do a gapped insertion sort for this gap size.
 		//# The first gap elements a[0..gap - 1] are already in gapped order keep adding one more element until the entire array is gap sorted
 
 		for (unsigned i = gap; i < numOfElements; ++i)
 		{
+			if ((elements[i] < elements[i - gap])) {
+				swapElements(elements[i-gap], elements[i], true);
+			}
 			//# add a[i] to the elements that have been gap sorted
 			//# save a[i] in current to make a hole at position i
 
@@ -169,14 +198,10 @@ void SortApp::visualizeShellSort() {
 
 			//a[j] = curr
 
-			j = i;
-
-			//while (j >= gap && (elements[j].getValue() >= elements[j - gap].getValue())) {
-			//	swapElements(elements[j], elements[j - gap]);
-			//	j -= gap;
-			//}
 		}
 	}
+
+	//visualizeInsertion();
 }
 
 
@@ -185,13 +210,13 @@ void SortApp::visualizeShellSort() {
 void SortApp::inrElements()
 {
 	if (numOfElements + 10 < ARR_SIZE) numOfElements += 10;
-	arrangeElements();
+	alignElements();
 }
 
 void SortApp::dcrElements()
 {
 	if (numOfElements - 10 > 6) numOfElements -= 10;
-	arrangeElements();
+	alignElements();
 }
 
 
@@ -218,7 +243,10 @@ void SortApp::handlePause()
 
 				case sf::Keyboard::Escape:
 					targetWindow.close();
-
+					break;
+				case sf::Keyboard::G:
+					randomize();
+					break;
 				}
 				break;
 
