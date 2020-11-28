@@ -23,7 +23,7 @@ SortApp::SortApp(sf::RenderWindow& _window) :
 	sortFrame{ frameSize },
 	numOfElements{ 4 },
 	elements{ randomElementsArr.randomize() },
-	animationSpeed{0.0001}
+	animationSpeed{0.05f}
 
 // Constructor Body
 {
@@ -81,45 +81,31 @@ void SortApp::setSortFrame()
 void SortApp::swapElements(Element& leftElem, Element& rightElem, bool optimize = 0) {
 	const float animationDistance = rightElem.getXPos();
 
+	leftElem. setColor(leftUnsortedColor);
+	rightElem.setColor(rightUnsortedColor);
+
+	while (leftElem.getXPos() < animationDistance) 
+	{
+		updateEvents();
+		rightElem.move(-animationSpeed * dt, 0.f);
+		leftElem. move( animationSpeed * dt, 0.f);
+		targetWindow.clear();
+		renderNavBar();
+		renderElements();
+		targetWindow.display();
+	}
+
+	std::swap(leftElem, rightElem);
+
 	if (optimize)
 	{
-		leftElem. setColor(leftUnsortedColor);
-		rightElem.setColor(rightUnsortedColor);
-
-		while (leftElem.getXPos() < animationDistance) {
-			updateEvents();
-			leftElem. move( animationSpeed * dt, 0.f);
-			rightElem.move(-animationSpeed * dt, 0.f);
-			targetWindow.clear();
-			renderNavBar();
-			renderElements();
-			targetWindow.display();
-		}
-
-		std::swap(leftElem, rightElem);
 		leftElem. setColor(gapSortedColor);
 		rightElem.setColor(gapSortedColor);
-		alignElements();
 	}
 	else
-	{
-		leftElem. setColor(leftUnsortedColor);
-		rightElem.setColor(rightUnsortedColor);
+		leftElem.setColor(iniSortedColor);
 
-		while (leftElem.getXPos() <= animationDistance) {
-			updateEvents();
-			leftElem. move( animationSpeed * dt, 0.f);
-			rightElem.move(-animationSpeed * dt, 0.f);
-			targetWindow.clear();
-			renderNavBar();
-			renderElements();
-			targetWindow.display();
-		}
-
-		std::swap(leftElem, rightElem);
-		leftElem.setColor(sortedElementsColor);
-		alignElements();
-	}
+	alignElements();
 }
 
 //void SortFrame::updateMovement(Element& leftElem, Element& rightElem)
@@ -168,7 +154,7 @@ void SortApp::visualizeInsertion() {
 	}
 
 	for (unsigned i{ 0 }; i<numOfElements; ++i)
-		elements[i].setColor(sortedElementsColor);
+		elements[i].setColor(sortedColor);
 }
 
 
@@ -332,12 +318,20 @@ void SortApp::updateEvents()
 					randomize();
 					break;
 
-				case sf::Keyboard::Equal:
+				case sf::Keyboard::Up:
 					inrElements();
 					break;
 
-				case sf::Keyboard::Hyphen:
+				case sf::Keyboard::Down:
 					dcrElements();
+					break;
+
+				case sf::Keyboard::Left:
+					animationSpeed -= 0.05f;
+					break;
+
+				case sf::Keyboard::Right:
+					animationSpeed += 0.05f;
 					break;
 
 				case sf::Keyboard::Escape:
@@ -393,7 +387,7 @@ void SortApp::renderElements()
 // Draws all App Components on window
 void SortApp::render() 
 {
-	dt = deltaClock.restart().asMicroseconds();
+	dt = deltaClock.restart().asMilliseconds();
 
 	targetWindow.clear(sf::Color::Cyan);
 

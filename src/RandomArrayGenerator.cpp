@@ -8,7 +8,7 @@ std::array<Element, ARR_SIZE> &RandomArrayGenerator::randomize()
 
 	for (unsigned i{ 0 }; i < ARR_SIZE; i++) {
 		elements[i].setValue(5 + std::rand() % RANGE);
-		elements[i].setColor(unsortedElementsColor);
+		elements[i].setColor(unsortedColor);
 	}
 
 	return elements;

@@ -28,7 +28,7 @@ void Element::move(const float& offsetX, const float& offsetY)
 
 
 // Sets color of element and element's rectangle
-void Element::setColor(const sf::Color& _color = unsortedElementsColor) {
+void Element::setColor(const sf::Color& _color = unsortedColor) {
 	rect.setFillColor(_color);
 	label.setFillColor(_color);
 }

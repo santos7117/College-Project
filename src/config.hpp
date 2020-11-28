@@ -40,8 +40,9 @@ const static sf::Color themeColor = sf::Color(52, 80, 92);
 	const static sf::Color frameBorderColor = sf::Color(192, 192, 225);
 	const static sf::Color leftUnsortedColor = sf::Color(190, 191, 88);
 	const static sf::Color rightUnsortedColor = sf::Color(204, 86, 86);
-	const static sf::Color sortedElementsColor	 = sf::Color(124, 254, 0);
-	const static sf::Color unsortedElementsColor = sf::Color(169, 169, 169);
+	const static sf::Color iniSortedColor = sf::Color(62, 150, 0);
+	const static sf::Color sortedColor	 = sf::Color(124, 255, 0);
+	const static sf::Color unsortedColor = sf::Color(169, 169, 169);
 	const static sf::Color gapSortedColor = sf::Color(64, 128, 0);
 
 
