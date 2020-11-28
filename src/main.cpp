@@ -14,11 +14,10 @@ int main()
 	//sf::Event event;
 	//PausePlayIndicator pauseIndicator;
 	SortApp app = SortApp(window);
-
+	//MainMenu menu = MainMenu(window);
 
 	while (window.isOpen()) 
 	{
-
 		app.update();
 
 		app.render();

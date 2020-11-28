@@ -101,8 +101,8 @@ void SortApp::handlePause()
 
 void SortApp::updateMouseEvents()
 {
-	float mouseX = sf::Mouse::getPosition(targetWindow).x;
-	float mouseY = sf::Mouse::getPosition(targetWindow).y;
+	float mouseX = (float)sf::Mouse::getPosition(targetWindow).x;
+	float mouseY = (float)sf::Mouse::getPosition(targetWindow).y;
 
 	backBtn.update(mouseX, mouseY);
 	insertionSortBtn.update(mouseX, mouseY);
@@ -110,7 +110,33 @@ void SortApp::updateMouseEvents()
 	plusBtn.update(mouseX, mouseY);
 	minusBtn.update(mouseX, mouseY);
 	genNewArrBtn.update(mouseX, mouseY);
+
+	if (backBtn.onClick()) {
+		targetWindow.close();
+	}
+
+	if (insertionSortBtn.onClick()) {
+		sortFrame.visualizeInsertion();
+	}
+
+	if (shellSortBtn.onClick()) {
+		sortFrame.visualizeShellSort();
+	}
+
+	if (plusBtn.onClick()) {
+		sortFrame.inrElements();
+	}
+
+	if (minusBtn.onClick()) {
+		sortFrame.dcrElements();
+	}
+
+	if (genNewArrBtn.onClick()) {
+		sortFrame.randomize();
+	}
 }
+
+
 
 
 void SortApp::updateEvents() 
@@ -184,10 +210,10 @@ void SortApp::renderNavBar()
 // Draws all App Components on window
 void SortApp::render() 
 {
-	targetWindow.clear(sf::Color::Cyan);
 
 	renderNavBar();
 	pauseIndicator.renderOn(targetWindow);
+	targetWindow.clear(sf::Color::Cyan);
 
 	sortFrame.render();
 

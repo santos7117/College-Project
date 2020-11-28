@@ -64,6 +64,12 @@ void SortFrame::setElements()
 
 }
 
+void SortFrame::randomize()
+{
+	elements = randomElementsArr.randomize();
+	setElements();
+}
+
 
 // Insertion Algorithm
 // checks for larger element to the left
@@ -118,7 +124,17 @@ void SortFrame::visualizeShellSort() {
 
 
 // Sets number of elements to be rendered
-void SortFrame::setNumOfElements(unsigned& _renderedElements) {	numOfElements = _renderedElements;	}
+void SortFrame::inrElements() 
+{	
+	numOfElements += 10;
+	setElements();
+}
+
+void SortFrame::dcrElements() 
+{ 
+	numOfElements -= 10;
+	setElements();
+}
 
 
 // Draws SortFrame 

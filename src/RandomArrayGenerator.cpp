@@ -2,7 +2,7 @@
 
 #include "RandomArrayGenerator.hpp"
 
-std::array<Element, ARR_SIZE> RandomArrayGenerator::randomize() 
+std::array<Element, ARR_SIZE> &RandomArrayGenerator::randomize() 
 {
 	std::srand(unsigned(std::time(nullptr)));
 

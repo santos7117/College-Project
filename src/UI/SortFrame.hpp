@@ -18,7 +18,7 @@ private:
 	float singleElementWidth;
 
 	RandomArrayGenerator randomElementsArr;
-	std::array <Element, ARR_SIZE> elements;
+	std::array <Element, ARR_SIZE>& elements;
 
 
 	//unsigned sleepTime = .5;
@@ -46,6 +46,7 @@ public:
 	// width from 5 to 200 && gap from 2 to 60
 	void setElements();
 
+	void randomize();
 
 	// Insertion Algorithm
 	// checks for larger element to the left
@@ -58,7 +59,9 @@ public:
 
 
 	// Sets number of elements to be rendered
-	void setNumOfElements(unsigned& _renderedElements);
+	void inrElements();
+
+	void dcrElements();
 
 
 	// Draws SortFrame 
