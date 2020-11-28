@@ -16,25 +16,22 @@ void SortFrame::setSortFrame()
 void SortFrame::swapElements(Element& leftElem, Element& rightElem) {
 	float leftXPos = leftElem.getXPos();
 	float rightXPos = rightElem.getXPos();
-	//float offset = singleElementWidth + gap;
+	float offset = 1.2f * singleElementWidth;
 
 	leftElem.setColor(sf::Color::Yellow);
 	rightElem.setColor(sf::Color::Red);
 
-	//while (leftXPos <= rightXPos) {
-	//	leftElem.move(10, 0);
-	//	rightElem.move(-10, 0);
-
-	//	leftElem.drawOn(target);
-	//	rightElem.drawOn(target);
-	//	target.clear();
-
-	//	leftXPos += offset;
-	//}
+	while (leftXPos <= rightXPos) {
+		leftXPos += offset;
+		leftElem.drawOn(target);
+		rightElem.drawOn(target);
+		target.display();
+	}
 
 	std::swap(leftElem, rightElem);
-
+	leftElem.setColor(sf::Color::Green);
 	rightElem.setColor(sf::Color::Green);
+	setElements();
 }
 
 SortFrame::SortFrame(sf::RenderWindow& _window) :
@@ -46,6 +43,11 @@ SortFrame::SortFrame(sf::RenderWindow& _window) :
 	setSortFrame();
 }
 
+//void SortFrame::updateMovement(Element& leftElem, Element& rightElem)
+//{
+//	leftElem.move(deltaTime, 0.f);
+//	rightElem.move(-deltaTime, 0.f);
+//}
 
 // Sets elements at the centre of the frame (window) by setting the elements
 // width from 5 to 200 && gap from 2 to 60
@@ -59,7 +61,6 @@ void SortFrame::setElements()
 
 	for (unsigned i{ 0 }; i < numOfElements; i++) {
 		elements[i].setRect(iniXPos + (i * (singleElementWidth + gap)), framePos.y, singleElementWidth);
-		elements[i].setColor(unsortedElementsColor);
 	}
 
 }
@@ -126,14 +127,20 @@ void SortFrame::visualizeShellSort() {
 // Sets number of elements to be rendered
 void SortFrame::inrElements() 
 {	
-	numOfElements += 10;
+	if (numOfElements + 10 < ARR_SIZE) numOfElements += 10;
 	setElements();
 }
 
 void SortFrame::dcrElements() 
 { 
-	numOfElements -= 10;
+	if (numOfElements - 10 > 6) numOfElements -= 10;
 	setElements();
+}
+
+
+void SortFrame::update(const float& _dt)
+{
+	
 }
 
 

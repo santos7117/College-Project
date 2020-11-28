@@ -20,12 +20,15 @@ void Element::setRect(const float &_x_pos, const float &_y_pos, const float &_wi
 
 
 // Moves element
-void Element::move(float& offsetX, float& offsetY) {	rect.move(offsetX, offsetY);	}
+void Element::move(const float& offsetX, const float& offsetY) 
+{	
+	rect.move(offsetX, offsetY);
+	label.move(offsetX, offsetY);
+}
 
 
 // Sets color of element and element's rectangle
-void Element::setColor(sf::Color _color = sf::Color::Blue) {
-	color = _color;
+void Element::setColor(const sf::Color& _color = unsortedElementsColor) {
 	rect.setFillColor(_color);
 	label.setFillColor(_color);
 }

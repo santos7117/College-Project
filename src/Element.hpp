@@ -13,7 +13,6 @@ private:
 	unsigned value;
 	sf::RectangleShape rect;
 	sf::Text label;
-	sf::Color color;
 
 
 
@@ -33,10 +32,10 @@ public:
 	void setRect(const float& _x_pos, const float& _y_pos, const float& _width);
 
 	// Moves element
-	void move(float& offsetX, float& offsetY);
+	void move(const float& offsetX, const float& offsetY);
 
 	// Sets color of element and element's rectangle
-	void setColor(sf::Color _color);
+	void setColor(const sf::Color& _color);
 
 	// Sets value for the element
 	void setValue(unsigned _val);

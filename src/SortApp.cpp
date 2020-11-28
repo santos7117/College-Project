@@ -8,9 +8,7 @@ SortApp::SortApp(sf::RenderWindow& _window) :
 
 	// Member initializers
 
-	targetWindow{ _window }, 
-
-	theme{themeColor},
+	targetWindow{ _window },
 
 	topNavBar{ topNavBarSize },
 	backBtn			{		"Back"	  , rsc.menuFont, 50 },
@@ -39,7 +37,7 @@ void SortApp::setNavBars()
 {
 	// Set top navigation bar
 	topNavBar.setPosition(topNavBarPos);
-	topNavBar.setFillColor(theme);
+	topNavBar.setFillColor(themeColor);
 
 	// Calculate positions for text buttons
 	sf::Vector2f iniTopNavLine{(topNavBarSize.x - backBtn.getWidth()
@@ -66,8 +64,9 @@ void SortApp::setNavBars()
 
 	// Set bottom navigation bar
 	btmNavBar.setPosition(btmNavBarPos);
-	btmNavBar.setFillColor(theme);
+	btmNavBar.setFillColor(themeColor);
 }
+
 
 // Handles pause state
 void SortApp::handlePause()
@@ -137,8 +136,6 @@ void SortApp::updateMouseEvents()
 }
 
 
-
-
 void SortApp::updateEvents() 
 {
 	while (targetWindow.pollEvent(event)) 
@@ -173,24 +170,41 @@ void SortApp::updateEvents()
 					handlePause();
 					break;
 
+				case sf::Keyboard::G:
+					sortFrame.randomize();
+					break;
+
+				case sf::Keyboard::Equal:
+					sortFrame.inrElements();
+					break;
+
+				case sf::Keyboard::Hyphen:
+					sortFrame.dcrElements();
+					break;
+
+				case sf::Keyboard::Escape:
+					targetWindow.close();
+					break;
+
 				}
 				break;
 
 			case sf::Event::MouseMoved:
-
+				updateMouseEvents();
 				break;
 				
 		}
 	}
 }
 
+
 void SortApp::update()
 {
 	updateEvents();
-	updateMouseEvents();
 	pauseIndicator.updateIcon();
-}
 
+	sortFrame.update(animationTime.asMilliseconds());
+}
 
 
 void SortApp::renderNavBar()
@@ -207,13 +221,16 @@ void SortApp::renderNavBar()
 	targetWindow.draw(btmNavBar);
 }
 
+
 // Draws all App Components on window
 void SortApp::render() 
 {
+	animationTime = deltaClock.restart();
+
+	targetWindow.clear(sf::Color::Cyan);
 
 	renderNavBar();
 	pauseIndicator.renderOn(targetWindow);
-	targetWindow.clear(sf::Color::Cyan);
 
 	sortFrame.render();
 

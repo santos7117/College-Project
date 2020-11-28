@@ -14,8 +14,6 @@ private:
 	sf::Event event;
 	sf::RenderWindow& targetWindow;
 
-	sf::Color theme;
-
 	sf::RectangleShape topNavBar;
 	Button backBtn;
 	Button insertionSortBtn;
@@ -26,8 +24,9 @@ private:
 	SortFrame sortFrame;
 	sf::RectangleShape btmNavBar;
 
+	sf::Clock deltaClock;
+	sf::Time animationTime;
 	PauseIndicator pauseIndicator;
-	unsigned animationTime;
 
 
 	void setNavBars();

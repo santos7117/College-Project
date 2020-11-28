@@ -5,6 +5,7 @@
 
 #include "../Element.hpp"
 #include "../RandomArrayGenerator.hpp"
+#include "../ElementAnimator.cpp"
 
 
 
@@ -20,6 +21,8 @@ private:
 	RandomArrayGenerator randomElementsArr;
 	std::array <Element, ARR_SIZE>& elements;
 
+	ElementAnimator animator;
+
 
 	//unsigned sleepTime = .5;
 	//std::clock_t clock;
@@ -34,6 +37,7 @@ private:
 
 	void setSortFrame();
 
+	void updateMovement(Element&, Element&);
 
 	// Swaps elements with animation while sorting
 	void swapElements(Element& leftElem, Element& rightElem);
@@ -63,6 +67,7 @@ public:
 
 	void dcrElements();
 
+	void update(const float &dt);
 
 	// Draws SortFrame 
 	void render();

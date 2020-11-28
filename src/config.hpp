@@ -38,6 +38,7 @@ const static sf::Color themeColor = sf::Color(52, 80, 92);
 	const static sf::Vector2f framePos  = sf::Vector2f(0, topNavBarPos.y + topNavBarSize.y);
 	const static sf::Vector2f frameSize = sf::Vector2f(SCR_WIDTH, 740.f);
 	const static sf::Color frameBorderColor = sf::Color(192, 192, 225);
+	const static sf::Color sortedElementsColor	 = sf::Color::Green;
 	const static sf::Color unsortedElementsColor = sf::Color(169, 169, 169);
 
 
@@ -47,7 +48,7 @@ const static sf::Color themeColor = sf::Color(52, 80, 92);
 
 
 // Array Constants
-const static size_t ARR_SIZE = 150;
+const static size_t ARR_SIZE = 100;
 const static unsigned RANGE = 550;
 
 #endif
