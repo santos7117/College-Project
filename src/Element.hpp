@@ -10,7 +10,7 @@
 class Element {
 private:
 
-	unsigned value;
+	short unsigned value;
 	sf::RectangleShape rect;
 	sf::Text label;
 
@@ -38,7 +38,7 @@ public:
 	void setColor(const sf::Color& _color);
 
 	// Sets value for the element
-	void setValue(unsigned _val);
+	void setValue(const short unsigned& _val);
 
 	// Returns value of the element
 	unsigned getValue() const;

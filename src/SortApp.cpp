@@ -21,8 +21,8 @@ SortApp::SortApp(sf::RenderWindow& _window) :
 	btmNavBar{ btmNavBarSize},
 
 	sortFrame{ frameSize },
-	numOfElements{ 4 },
-	elements{ randomElementsArr.randomize() },
+	numOfElements{ 6 },
+	elements{ randomElementsArr.randomize(numOfElements) },
 	animationSpeed{0.05f}
 
 // Constructor Body
@@ -103,8 +103,6 @@ void SortApp::swapElements(Element& leftElem, Element& rightElem, bool optimize 
 		leftElem. setColor(gapSortedColor);
 		rightElem.setColor(gapSortedColor);
 	}
-	else
-		leftElem.setColor(iniSortedColor);
 
 	alignElements();
 }
@@ -125,16 +123,16 @@ void SortApp::alignElements()
 	float totalWidthOfElements = numOfElements * (singleElementWidth + gap) - gap;
 	float iniXPos = (sortFrame.getLocalBounds().width - totalWidthOfElements) / 2;
 
-	for (unsigned i{ 0 }; i < numOfElements; i++) 
+	for (short i{ 0 }; i < numOfElements; i++) 
 	{
 		elements[i].setRect(iniXPos + (i * (singleElementWidth + gap)), framePos.y, singleElementWidth);
 	}
 
 }
 
-void SortApp::randomize()
+void SortApp::randomize(const short unsigned& _numOfElements)
 {
-	elements = randomElementsArr.randomize();
+	elements = randomElementsArr.randomize(_numOfElements);
 	alignElements();
 }
 
@@ -142,7 +140,7 @@ void SortApp::randomize()
 // Insertion Algorithm
 // checks for larger element to the left
 void SortApp::visualizeInsertion() {
-	int j;
+	short j;
 
 	for (short i{ 1 }; i < numOfElements; i++) 
 	{
@@ -154,8 +152,7 @@ void SortApp::visualizeInsertion() {
 		}
 	}
 
-	for (short i{ 0 }; i<numOfElements; ++i)
-		elements[i].setColor(sortedColor);
+	setSortedColor();
 }
 
 
@@ -197,10 +194,34 @@ void SortApp::visualizeBubbleSort() {
 		}
 	}
 
-	for (unsigned i{ 0 }; i < numOfElements; ++i)
-		elements[i].setColor(sortedColor);
+	setSortedColor();
 }
 
+
+void SortApp::visualizeSelection()
+{
+	short i, j, min;
+
+	for (i = 0; i < numOfElements - 1; ++i)
+	{
+		min = i;
+		for (j = i + 1; j < numOfElements; ++j)
+		{
+			if (elements[j] < elements[min]) min = j;
+		}
+
+		if (min != i) swapElements(elements[i], elements[min]);
+	}
+
+	setSortedColor();
+}
+
+
+void SortApp::setSortedColor()
+{
+	for (short i{ 0 }; i < numOfElements; ++i)
+		elements[i].setColor(sortedColor);
+}
 
 
 // Sets number of elements to be rendered
@@ -242,7 +263,7 @@ void SortApp::handlePause()
 					targetWindow.close();
 					break;
 				case sf::Keyboard::G:
-					randomize();
+					randomize(numOfElements);
 					break;
 				}
 				break;
@@ -286,7 +307,7 @@ void SortApp::updateMouseEvents()
 	}
 
 	if (genNewArrBtn.onClick()) {
-		randomize();
+		randomize(numOfElements);
 	}
 }
 
@@ -315,12 +336,16 @@ void SortApp::updateEvents()
 					break;
 
 
-				case sf::Keyboard::S:
+				case sf::Keyboard::H:
 					visualizeShellSort();
 					break;
 
 				case sf::Keyboard::B:
 					visualizeBubbleSort();
+					break;
+
+				case sf::Keyboard::S:
+					visualizeSelection();
 					break;
 
 				case sf::Keyboard::P:
@@ -330,7 +355,7 @@ void SortApp::updateEvents()
 					break;
 
 				case sf::Keyboard::G:
-					randomize();
+					randomize(numOfElements);
 					break;
 
 				case sf::Keyboard::Up:
@@ -393,7 +418,7 @@ void SortApp::renderElements()
 {
 	targetWindow.draw(sortFrame);
 
-	for (unsigned i{ 0 }; i < numOfElements; i++) {
+	for (short i{ 0 }; i < numOfElements; i++) {
 		elements[i].drawOn(targetWindow);
 	}
 }

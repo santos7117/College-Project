@@ -18,7 +18,7 @@ private:
 public:
 
 	// Returns array of elements with random values
-	std::array<Element, ARR_SIZE> &randomize();
+	std::array<Element, ARR_SIZE> &randomize(const short unsigned& _numOfElements);
 
 };
 

@@ -35,7 +35,7 @@ void Element::setColor(const sf::Color& _color = unsortedColor) {
 
 
 // Sets value for the element
-void Element::setValue(unsigned _val) {	value = _val;	}
+void Element::setValue(const short unsigned& _val) {	value = _val;	}
 
 
 // Returns value of the element

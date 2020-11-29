@@ -29,7 +29,7 @@ private:
 
 	// Added from SortFrame
 	sf::RectangleShape sortFrame;
-	unsigned numOfElements;
+	short unsigned numOfElements;
 
 	std::array <Element, ARR_SIZE>& elements;
 	RandomArrayGenerator randomElementsArr;
@@ -46,7 +46,7 @@ private:
 	// width from 5 to 200 && gap from 2 to 60
 	void alignElements();
 
-	void randomize();
+	void randomize(const short unsigned& _numOfElements);
 
 	// Insertion Algorithm
 	// checks for larger element to the left
@@ -58,6 +58,10 @@ private:
 
 
 	void visualizeBubbleSort();
+
+	void visualizeSelection();
+
+	void setSortedColor();
 
 
 
