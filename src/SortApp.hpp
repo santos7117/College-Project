@@ -3,7 +3,6 @@
 #ifndef _SORT_APP_HPP
 #define _SORT_APP_HPP
 
-//#include "UI/SortFrame.hpp"
 #include "UI/PauseIndicator.hpp"
 #include "UI/Button.hpp"
 #include "Element.hpp"
@@ -56,6 +55,9 @@ private:
 
 	// Shell Sort Algorithm
 	void visualizeShellSort();
+
+
+	void visualizeBubbleSort();
 
 
 

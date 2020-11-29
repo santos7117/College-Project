@@ -23,7 +23,7 @@ const static ResourceHolder rsc;
 
 
 // App Configuration
-const static unsigned SHELL_GAPS[6] = { /*701, 301,*/ 132, 57, 23, 10, 4, 1 };
+const static unsigned short int SHELL_GAPS[6] = { /*701, 301,*/ 132, 57, 23, 10, 4, 1 };
 
 const static sf::Color themeColor = sf::Color(52, 80, 92);
 	

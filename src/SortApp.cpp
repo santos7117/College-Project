@@ -95,6 +95,7 @@ void SortApp::swapElements(Element& leftElem, Element& rightElem, bool optimize 
 		targetWindow.display();
 	}
 
+	// reflect change on array
 	std::swap(leftElem, rightElem);
 
 	if (optimize)
@@ -143,7 +144,7 @@ void SortApp::randomize()
 void SortApp::visualizeInsertion() {
 	int j;
 
-	for (unsigned i{ 1 }; i < numOfElements; i++) 
+	for (short i{ 1 }; i < numOfElements; i++) 
 	{
 		j = i - 1;
 
@@ -153,41 +154,51 @@ void SortApp::visualizeInsertion() {
 		}
 	}
 
-	for (unsigned i{ 0 }; i<numOfElements; ++i)
+	for (short i{ 0 }; i<numOfElements; ++i)
 		elements[i].setColor(sortedColor);
 }
 
 
 // Shell Sort Algorithm
 void SortApp::visualizeShellSort() {
-	for (const unsigned& gap : SHELL_GAPS) 
+
+	// gap sort
+	for (const short unsigned int& gap : SHELL_GAPS) 
 	{
 		//# Do a gapped insertion sort for this gap size.
 		//# The first gap elements a[0..gap - 1] are already in gapped order keep adding one more element until the entire array is gap sorted
 
-		for (unsigned i = gap; i < numOfElements; ++i)
+		for (short i =gap; i < numOfElements; ++i)
 		{
-			if ((elements[i] < elements[i - gap])) {
+			if ((elements[i - gap]) > elements[i]) {
 				swapElements(elements[i-gap], elements[i], true);
 			}
-			//# add a[i] to the elements that have been gap sorted
-			//# save a[i] in current to make a hole at position i
-
-			//curr = a[i]
-
-			//# shift earlier gap - sorted elements up until the correct location for a[i] is found
-
-			//for (j = i; j >= gap and a[j - gap] > curr; j -= gap)
-			//	a[j] = a[j - gap]
-
-			//# put temp(the original a[i]) in its correct location
-
-			//a[j] = curr
 
 		}
 	}
 
 	//visualizeInsertion();
+}
+
+
+void SortApp::visualizeBubbleSort() {
+	bool isSorted{ false };
+
+	for (short pass{ 0 }; pass < numOfElements && !isSorted; ++pass)
+	{
+		for (short j{ 0 }; j < (numOfElements - pass - 1); ++j)
+		{
+			isSorted = true;
+			if (elements[j] > elements[j + 1])
+			{
+				swapElements(elements[j], elements[j + 1]);
+				isSorted = false;
+			}
+		}
+	}
+
+	for (unsigned i{ 0 }; i < numOfElements; ++i)
+		elements[i].setColor(sortedColor);
 }
 
 
@@ -306,6 +317,10 @@ void SortApp::updateEvents()
 
 				case sf::Keyboard::S:
 					visualizeShellSort();
+					break;
+
+				case sf::Keyboard::B:
+					visualizeBubbleSort();
 					break;
 
 				case sf::Keyboard::P:
