@@ -18,6 +18,7 @@ private:
 	// To be replaced by navigation bar class
 	sf::RectangleShape topNavBar;
 	Button backBtn;
+	Button selectionSortBtn;
 	Button insertionSortBtn;
 	Button shellSortBtn;
 	Button plusBtn;

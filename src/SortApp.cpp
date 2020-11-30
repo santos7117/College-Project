@@ -12,8 +12,9 @@ SortApp::SortApp(sf::RenderWindow& _window) :
 
 	topNavBar{ topNavBarSize },
 	backBtn			{		"Back"	  , rsc.menuFont, 50 },
-	insertionSortBtn{ "Insertion Sort", rsc.menuFont, 50 },
-	shellSortBtn	{   "Shell Sort"  , rsc.menuFont, 50 },
+	selectionSortBtn{ "Selection Sort", rsc.menuFont, 35 },
+	insertionSortBtn{ "Insertion Sort", rsc.menuFont, 35 },
+	shellSortBtn	{   "Shell Sort"  , rsc.menuFont, 35 },
 	plusBtn { "+", rsc.menuFont, 90 },
 	minusBtn{ "-", rsc.menuFont, 90 },
 	genNewArrBtn{ "Generate New Arr"  , rsc.menuFont, 65 },
@@ -41,6 +42,7 @@ void SortApp::setNavBars()
 
 	// Calculate positions for text buttons
 	sf::Vector2f iniTopNavLine{(topNavBarSize.x - backBtn.getWidth()
+												- selectionSortBtn.getWidth()
 												- insertionSortBtn.getWidth()
 												- shellSortBtn.getWidth()
 												- plusBtn.getWidth()
@@ -48,17 +50,19 @@ void SortApp::setNavBars()
 												- genNewArrBtn.getWidth()) / 3.f
 												, (topNavBarSize.y - backBtn.getHeight()) / 5.f };
 	sf::Vector2f backBtnTextPos{ iniTopNavLine.y, iniTopNavLine.y };
-	sf::Vector2f insertionSortBtnTextPos{ iniTopNavLine.x + backBtn.getWidth() - 25.f, iniTopNavLine.y };
-	sf::Vector2f shellSortBtnTextPos{ insertionSortBtnTextPos.x + insertionSortBtn.getWidth() + 70.f, iniTopNavLine.y };
-	sf::Vector2f genNewArrBtnTextPos{ (topNavBarSize.x - genNewArrBtn.getWidth() - 85.f), iniTopNavLine.y - 15.f };
-	sf::Vector2f minusBtnPos{ genNewArrBtnTextPos.x - minusBtn.getWidth() - 35.f, iniTopNavLine.y - 20.f };
+	sf::Vector2f selectionSortBtnPos{ iniTopNavLine.x + backBtn.getWidth() - 25.f, iniTopNavLine.y };
+	sf::Vector2f insertionSortBtnPos{ selectionSortBtnPos.x + insertionSortBtn.getWidth() + 70.f, iniTopNavLine.y };
+	sf::Vector2f shellSortBtnPos{ insertionSortBtnPos.x + insertionSortBtn.getWidth() + 70.f, iniTopNavLine.y };
+	sf::Vector2f genNewArrBtnPos{ (topNavBarSize.x - genNewArrBtn.getWidth() - 85.f), iniTopNavLine.y - 15.f };
+	sf::Vector2f minusBtnPos{ genNewArrBtnPos.x - minusBtn.getWidth() - 35.f, iniTopNavLine.y - 20.f };
 	sf::Vector2f plusBtnPos{ minusBtnPos.x - plusBtn.getWidth() - 8.f, minusBtnPos.y };
 
 	// Set text buttons
 	backBtn.setPosition(backBtnTextPos);
-	insertionSortBtn.setPosition(insertionSortBtnTextPos);
-	shellSortBtn.setPosition(shellSortBtnTextPos);
-	genNewArrBtn.setPosition(genNewArrBtnTextPos);
+	selectionSortBtn.setPosition(selectionSortBtnPos);
+	insertionSortBtn.setPosition(insertionSortBtnPos);
+	shellSortBtn.setPosition(shellSortBtnPos);
+	genNewArrBtn.setPosition(genNewArrBtnPos);
 	minusBtn.setPosition(minusBtnPos);
 	plusBtn.setPosition(plusBtnPos);
 
@@ -280,6 +284,7 @@ void SortApp::updateMouseEvents()
 	float mouseY = (float)sf::Mouse::getPosition(targetWindow).y;
 
 	backBtn.update(mouseX, mouseY);
+	selectionSortBtn.update(mouseX, mouseY);
 	insertionSortBtn.update(mouseX, mouseY);
 	shellSortBtn.update(mouseX, mouseY);
 	plusBtn.update(mouseX, mouseY);
@@ -288,6 +293,10 @@ void SortApp::updateMouseEvents()
 
 	if (backBtn.onClick()) {
 		targetWindow.close();
+	}
+
+	if (selectionSortBtn.onClick()) {
+		visualizeSelection();
 	}
 
 	if (insertionSortBtn.onClick()) {
@@ -403,6 +412,7 @@ void SortApp::renderNavBar()
 	targetWindow.draw(topNavBar);
 
 	backBtn.renderOn(targetWindow);
+	selectionSortBtn.renderOn(targetWindow);
 	insertionSortBtn.renderOn(targetWindow);
 	shellSortBtn.renderOn(targetWindow);
 	plusBtn.renderOn(targetWindow);
