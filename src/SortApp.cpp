@@ -23,7 +23,7 @@ SortApp::SortApp(sf::RenderWindow& _window) :
 
 	sortFrame{ frameSize },
 	numOfElements{ 6 },
-	elements{ randomElementsArr.randomize(numOfElements) },
+	elements{ randomElementsArr.randomize(ARR_SIZE) },
 	animationSpeed{0.05f}
 
 // Constructor Body

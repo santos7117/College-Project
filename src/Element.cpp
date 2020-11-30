@@ -3,7 +3,10 @@
 #include "Element.hpp"
 
 
-Element::Element() {	}
+Element::Element() 
+{
+	setColor(unsortedColor);
+}
 
 
 // Sets rectangle's position and size for the element
