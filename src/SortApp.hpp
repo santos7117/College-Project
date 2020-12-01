@@ -10,7 +10,7 @@
 
 
 
-class SortApp {
+class Application {
 private:
 	sf::Event event;
 	sf::RenderWindow& targetWindow;
@@ -31,15 +31,21 @@ private:
 	// Added from SortFrame
 	sf::RectangleShape sortFrame;
 	short unsigned numOfElements;
+	short unsigned numOfSwaps;
+	short unsigned numOfComparisions;
+	float animationSpeed;
+	sf::Text elementsSizeIndicator;
+	sf::Text swapIndicator;
+	sf::Text comparisionIndicator;
+	sf::Text animationSpeedIndicator;
 
-	std::array <Element, ARR_SIZE>& elements;
+	std::vector <Element/*, ARR_SIZE*/>& elements;
 	RandomArrayGenerator randomElementsArr;
 	float singleElementWidth;
 	//
 
 	sf::Clock deltaClock;
 	sf::Int64 dt;
-	double animationSpeed;
 
 	void setSortFrame();
 
@@ -49,21 +55,24 @@ private:
 
 	void randomize(const short unsigned& _numOfElements);
 
+
+	// Swaps elements with animation while sorting
+	void swapElements(Element& leftElem, Element& rightElem, bool);
+
+
 	// Insertion Algorithm
 	// checks for larger element to the left
 	void visualizeInsertion();
 
-
 	// Shell Sort Algorithm
 	void visualizeShellSort();
-
 
 	void visualizeBubbleSort();
 
 	void visualizeSelection();
 
-	void setSortedColor();
 
+	void setSortedColor();
 
 
 	// Sets number of elements to be rendered
@@ -71,33 +80,36 @@ private:
 
 	void dcrElements();
 
-	void updateMovement(Element&, Element&);
+	void resetSortDetails();
 
-	// Swaps elements with animation while sorting
-	void swapElements(Element& leftElem, Element& rightElem, bool);
+	void updateSortDetails();
+
+	void updateMovement(Element&, Element&);
 
 
 	// Navigation Bar class
 	void setNavBars();
 
-	void renderNavBar();
-
 	void updateMouseEvents();
-	//
-
 
 	// Handles pause state
 	void handlePause();
 
 	void updateEvents();
 
-	void renderElements();
+	void drawNavBar();
+
+	void drawSortDetails();
+
+	void drawElements();
+
+	void renderEverything();
 
 
 public:
 
 	// Constructor
-	SortApp(sf::RenderWindow&);
+	Application(sf::RenderWindow&);
 
 
 	void update();

@@ -21,12 +21,6 @@ public:
 	// Constructor
 	Element();
 
-	// Copy Constructor
-	//Element(const Element& other) : 
-	//	value(other.value), rect(other.rect), label(other.label), color(other.color)
-	//{	}
-
-
 
 	// Sets rectangle's position and size for the element
 	void setRect(const float& _x_pos, const float& _y_pos, const float& _width);

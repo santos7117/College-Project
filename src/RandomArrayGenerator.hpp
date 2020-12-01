@@ -11,16 +11,16 @@ class RandomArrayGenerator
 
 private:
 
-	std::vector <Element/*, ARR_SIZE*/> elements;
+	std::vector <Element> elements;
 
 
 public:
 	RandomArrayGenerator();
 
 	// Returns array of Elements with random values
-	std::vector<Element/*, ARR_SIZE*/>& init();
+	std::vector<Element>& init();
 
-	std::vector<Element/*, ARR_SIZE*/> &randomize(const short unsigned& _numOfElements);
+	std::vector<Element> &randomize(const short unsigned& _numOfElements);
 
 };
 

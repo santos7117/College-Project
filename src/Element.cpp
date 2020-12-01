@@ -5,7 +5,6 @@
 
 Element::Element() 
 {
-	setColor(unsortedColor);
 }
 
 
@@ -31,7 +30,8 @@ void Element::move(const float& offsetX, const float& offsetY)
 
 
 // Sets color of element and element's rectangle
-void Element::setColor(const sf::Color& _color = unsortedColor) {
+void Element::setColor(const sf::Color& _color = unsortedColor) 
+{
 	rect.setFillColor(_color);
 	label.setFillColor(_color);
 }
@@ -50,7 +50,8 @@ float Element::getXPos() const {	return rect.getPosition().x;	}
 
 
 // Draws element with label on window
-void Element::drawOn(sf::RenderWindow& window) const{
+void Element::drawOn(sf::RenderWindow& window) const
+{
 	window.draw(rect);
 	window.draw(label);
 }

@@ -10,10 +10,9 @@
 int main()
 {
 	sf::RenderWindow window(SCR_DIMENSIONS, "Visualizer");
-	window.setFramerateLimit(60);
+	window.setFramerateLimit(100);
 	//sf::Event event;
-	//PausePlayIndicator pauseIndicator;
-	SortApp app = SortApp(window);
+	Application app = Application(window);
 	//MainMenu menu = MainMenu(window);
 
 	while (window.isOpen()) 

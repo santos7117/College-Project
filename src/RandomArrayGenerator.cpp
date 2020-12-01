@@ -8,8 +8,9 @@ RandomArrayGenerator::RandomArrayGenerator() :
 
 
 // Returns initilized vector
-std::vector<Element/*, ARR_SIZE*/> &RandomArrayGenerator::init() 
+std::vector<Element> &RandomArrayGenerator::init() 
 {
+	// creates seed each time program starts
 	std::srand(short unsigned(std::time(nullptr)));
 
 	return elements;
@@ -17,7 +18,7 @@ std::vector<Element/*, ARR_SIZE*/> &RandomArrayGenerator::init()
 
 
 // Fills vector with random numbers upto given index
-std::vector<Element/*, ARR_SIZE*/>& RandomArrayGenerator::randomize(const short unsigned& _numOfElements = ARR_SIZE)
+std::vector<Element>& RandomArrayGenerator::randomize(const short unsigned& _numOfElements = ARR_SIZE)
 {
 	for (short i{ 0 }; i< _numOfElements; ++i)
 	{
