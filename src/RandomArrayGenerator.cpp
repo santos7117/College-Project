@@ -2,12 +2,27 @@
 
 #include "RandomArrayGenerator.hpp"
 
-std::array<Element, ARR_SIZE> &RandomArrayGenerator::randomize(const short unsigned& _numOfElements = ARR_SIZE) 
+RandomArrayGenerator::RandomArrayGenerator() :
+	elements{ARR_SIZE}
+{}
+
+
+// Returns initilized vector
+std::vector<Element/*, ARR_SIZE*/> &RandomArrayGenerator::init() 
 {
 	std::srand(short unsigned(std::time(nullptr)));
 
-	for (unsigned i{ 0 }; i < _numOfElements; i++) {
+	return elements;
+}
+
+
+// Fills vector with random numbers upto given index
+std::vector<Element/*, ARR_SIZE*/>& RandomArrayGenerator::randomize(const short unsigned& _numOfElements = ARR_SIZE)
+{
+	for (short i{ 0 }; i< _numOfElements; ++i)
+	{
 		elements[i].setValue(5 + std::rand() % RANGE);
+		elements[i].setColor(unsortedColor);
 	}
 
 	return elements;
