@@ -1,7 +1,6 @@
 //#include "stdafx.hpp"
 //#include <iostream>
 //#include "config.hpp"
-//#include "./UI/PausePlayIndicator.cpp"
 #include "SortApp.hpp"
 //#include "./UI/MainMenu.hpp"
 //#include "./UI/SplashScreen.cpp"

@@ -3,9 +3,8 @@
 #ifndef _STDAFX_HPP
 #define _STDAFX_HPP
 
-//#include <time.h>
-//#include <random>
-//#include <ctime>
+#include <memory>
+#include <stack>
 #include <array>
 
 #include <SFML/Window/Event.hpp>
