@@ -1,18 +1,11 @@
-//#include "stdafx.hpp"
-//#include <iostream>
-//#include "config.hpp"
-#include "SortApp.hpp"
-//#include "./UI/MainMenu.hpp"
-//#include "./UI/SplashScreen.cpp"
+#include "Application.hpp"
 
 
 int main()
 {
-	sf::RenderWindow window(SCR_DIMENSIONS, "Visualizer");
-	window.setFramerateLimit(100);
-	//sf::Event event;
+	sf::RenderWindow window(SCR_DIMENSIONS, "Visualizer", sf::Style::Fullscreen);
+	window.setFramerateLimit(60);
 	Application app = Application(window);
-	//MainMenu menu = MainMenu(window);
 
 	while (window.isOpen()) 
 	{

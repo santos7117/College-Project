@@ -1,6 +1,6 @@
 #include "stdafx.hpp"
 
-#include "SortApp.hpp"
+#include "Application.hpp"
 
 
 // Constructor
@@ -28,19 +28,20 @@ Application::Application(sf::RenderWindow& _window) :
 	numOfSwaps		 { 0 },
 	numOfComparisions{ 0 },
 	animationSpeed	 { 1.f },
-	elementsSizeIndicator  {	  "Size : " + std::to_string(numOfElements)		 , rsc.menuFont, 30},
-	swapIndicator		   {					"Swaps : 0"					     , rsc.menuFont, 30},
-	comparisionIndicator   {				 "Comparisions : 0"					 , rsc.menuFont, 30},
-	animationSpeedIndicator{"Animation Speed : " + std::to_string(animationSpeed), rsc.menuFont, 30},
+	elementsSizeIndicator  {	  "Size : " + std::to_string(numOfElements)		 , rsc.menuFont, 20},
+	animationSpeedIndicator{"Animation Speed : " + std::to_string(animationSpeed), rsc.menuFont, 20},
+	swapIndicator		   {					"Swaps : 0"					     , rsc.menuFont, 20},
+	comparisionIndicator   {				 "Comparisions : 0"					 , rsc.menuFont, 20},
 
 	// initialization of array
-	elements{ randomElementsArr.init() }
+	elements{ elementsGenerator.init() }
 
 // Constructor Body
 {
 	setNavBars();
 	setSortFrame();
 	randomize(ARR_SIZE);
+
 }
 
 
@@ -61,12 +62,12 @@ void Application::setNavBars()
 															- minusBtn.getWidth()
 															- genNewArrBtn.getWidth()) / 3.f
 															, (topNavBarSize.y - backBtn.getHeight()) / 5.f };
-	const static sf::Vector2f backBtnTextPos	 {						 iniTopNavLine.y					  , iniTopNavLine.y			};
+	const static sf::Vector2f backBtnTextPos	 {						 iniTopNavLine.y					  , iniTopNavLine.y	- 15.f	};
 	const static sf::Vector2f selectionSortBtnPos{			iniTopNavLine.x + backBtn.getWidth() - 25.f		  , iniTopNavLine.y			};
 	const static sf::Vector2f insertionSortBtnPos{ selectionSortBtnPos.x + insertionSortBtn.getWidth() + 70.f , iniTopNavLine.y			};
 	const static sf::Vector2f shellSortBtnPos	 { insertionSortBtnPos.x + insertionSortBtn.getWidth() + 70.f , iniTopNavLine.y			};
-	const static sf::Vector2f genNewArrBtnPos	 {	  (topNavBarSize.x - genNewArrBtn.getWidth() - 85.f) 	  , iniTopNavLine.y - 15.f  };
-	const static sf::Vector2f minusBtnPos		 {		genNewArrBtnPos.x - minusBtn.getWidth() - 35.f		  , iniTopNavLine.y - 20.f  };
+	const static sf::Vector2f genNewArrBtnPos	 {	  (topNavBarSize.x - genNewArrBtn.getWidth() - 85.f) 	  , iniTopNavLine.y - 25.f  };
+	const static sf::Vector2f minusBtnPos		 {		genNewArrBtnPos.x - minusBtn.getWidth() - 35.f		  , iniTopNavLine.y - 40.f  };
 	const static sf::Vector2f plusBtnPos		 {			 minusBtnPos.x - plusBtn.getWidth() - 8.f		  , minusBtnPos.y			};
 
 	// set buttons position from above calculations
@@ -94,17 +95,11 @@ void Application::setSortFrame()
 	sortFrame.setOutlineColor(frameBorderColor);
 	sortFrame.setOutlineThickness(1.f);
 
-	// calculates positions for sort detail indicators relative to frame position
-	const static sf::Vector2f sizeIndicatorPos  	 = sf::Vector2f(framePos.x + 5.f , framePos.y + 555.f			   );
-	const static sf::Vector2f swapIndicatorPos		 = sf::Vector2f(framePos.x + 5.f , sizeIndicatorPos.y + 30.f	   );
-	const static sf::Vector2f comparisionIndiatorPos = sf::Vector2f(framePos.x + 5.f , swapIndicatorPos.y + 30.f	   );
-	const static sf::Vector2f animSpeedIndicatorPos  = sf::Vector2f(framePos.x + 5.f , comparisionIndiatorPos.y + 30.f );
-
 	// set up indicators
-	elementsSizeIndicator.setPosition(sizeIndicatorPos);
-	swapIndicator.setPosition(swapIndicatorPos);
-	comparisionIndicator.setPosition(comparisionIndiatorPos);
-	animationSpeedIndicator.setPosition(animSpeedIndicatorPos);
+	elementsSizeIndicator.setPosition  (framePos.x + 5.f , btmNavBarPos.y - 4.f		   );
+	animationSpeedIndicator.setPosition(framePos.x + 5.f , btmNavBarPos.y - 8.f + 25.f );
+	swapIndicator.setPosition		   (framePos.x + 5.f , 810.f					   );
+	comparisionIndicator.setPosition   (framePos.x + 5.f , 810.f + 15.f				   );
 
 	alignElements();
 }
@@ -114,25 +109,23 @@ void Application::setSortFrame()
 void Application::alignElements()
 {
 	// calculates width of single elements and gaps associated with the elements
-	singleElementWidth = float(zoomFactor / numOfElements);
+	singleElementWidth = float(normalZoomFactor / numOfElements);
 	float gap = 0.2f * singleElementWidth;
 
 	// calculates total width of all rendered elements and initial position for first element
 	float totalWidthOfElements = numOfElements * (singleElementWidth + gap) - gap;
-	float iniXPos = (sortFrame.getLocalBounds().width - totalWidthOfElements) / 2;
+	float iniXPos = (frameSize.x - totalWidthOfElements) / 2.f;
 
 	// sets the above calculated positions for every elements
-	for (short i{ 0 }; i < numOfElements; i++) 
-	{
+	for (short i{ 0 }; i < numOfElements; i++)
 		elements[i].setRect(iniXPos + (i * (singleElementWidth + gap)), framePos.y + 2.f, singleElementWidth);
-	}
-
 }
 
 // Randomizes original array
 void Application::randomize(const short unsigned& _numOfElements)
 {
-	elements = randomElementsArr.randomize(_numOfElements);
+	elements = elementsGenerator.randomize(_numOfElements);
+
 	resetSortDetails();
 	alignElements();
 }
@@ -180,7 +173,8 @@ void Application::swapElements(Element& leftElem, Element& rightElem, bool optim
 
 // Insertion Algorithm
 // Checks for larger element on the left and inserts at appropriate position
-void Application::visualizeInsertion() {
+void Application::visualizeInsertion(ElementsArray& arr) 
+{
 	resetSortDetails();
 
 	// pointer for travelling to the left of array
@@ -191,9 +185,9 @@ void Application::visualizeInsertion() {
 		++numOfComparisions;
 		j = i - 1;
 
-		while (j >= 0 && (elements[j] > elements[j + 1])) {
-			swapElements(elements[j], elements[j + 1]);
-			--j;
+		for (j; j >= 0 && (arr[j] > arr[j + 1]); --j)
+		{
+			swapElements(arr[j], arr[j + 1]);
 		}
 	}
 
@@ -202,7 +196,7 @@ void Application::visualizeInsertion() {
 
 // Shell Sort Algorithm
 // Gaps sorts the given array first and then applies insertion algorithm
-void Application::visualizeShellSort() {
+void Application::visualizeShellSort(ElementsArray& arr) {
 	resetSortDetails();
 
 	// gap sorts for given gap size
@@ -211,8 +205,8 @@ void Application::visualizeShellSort() {
 		for (short i =gap; i < numOfElements; ++i)
 		{
 			++numOfComparisions;
-			if ((elements[i - gap]) > elements[i]) {
-				swapElements(elements[i-gap], elements[i], true);
+			if ((arr[i - gap]) > arr[i]) {
+				swapElements(arr[i-gap], arr[i], true);
 			}
 
 		}
@@ -223,7 +217,7 @@ void Application::visualizeShellSort() {
 
 // Selection Sort Algorithm
 // Checks for the smallest element on each pass and walks the element to the first
-void Application::visualizeSelection()
+void Application::visualizeSelection(ElementsArray& arr)
 {
 	resetSortDetails();
 
@@ -234,13 +228,13 @@ void Application::visualizeSelection()
 		min = i;
 		for (j = i + 1; j < numOfElements; ++j)
 		{
-			if (elements[j] < elements[min]) {
+			if (arr[j] < arr[min]) {
 				++numOfComparisions;
 				min = j;
 			}
 		}
 
-		if (min != i) swapElements(elements[i], elements[min]);
+		if (min != i) swapElements(arr[i], arr[min]);
 	}
 
 	setSortedColor();
@@ -248,7 +242,7 @@ void Application::visualizeSelection()
 
 // Bubble Sort Algorithm
 // Checks for largest element on each pass and walks the element to the last
-void Application::visualizeBubbleSort() {
+void Application::visualizeBubbleSort(ElementsArray& arr) {
 	resetSortDetails();
 
 	for (short pass{ 0 }; pass < numOfElements; ++pass)
@@ -257,9 +251,9 @@ void Application::visualizeBubbleSort() {
 
 		for (short j{ 0 }; j < (numOfElements - pass - 1); ++j)
 		{
-			if (elements[j] > elements[j + 1])
+			if (arr[j] > arr[j + 1])
 			{
-				swapElements(elements[j], elements[j + 1]);
+				swapElements(arr[j], arr[j + 1]);
 			}
 		}
 	}
@@ -270,8 +264,8 @@ void Application::visualizeBubbleSort() {
 
 void Application::setSortedColor()
 {
-	for (Element& elem : elements)
-		elem.setColor(sortedColor);
+	for (short i{ 0 }; i<numOfElements; ++i)
+		elements[i].setColor(sortedColor);
 }
 
 
@@ -303,9 +297,9 @@ void Application::resetSortDetails()
 void Application::updateSortDetails()
 {
 	elementsSizeIndicator.setString("Size : " + std::to_string(numOfElements));
+	animationSpeedIndicator.setString("Animation Speed : " + std::to_string(animationSpeed));
 	swapIndicator.setString("Swaps : " + std::to_string(numOfSwaps));
 	comparisionIndicator.setString("Comparisions : " + std::to_string(numOfComparisions));
-	animationSpeedIndicator.setString("Animation Speed : " + std::to_string(animationSpeed));
 }
 
 
@@ -327,7 +321,6 @@ void Application::handlePause()
 				{
 				case sf::Keyboard::P:
 					pauseIndicator.reverseState();
-					pauseIndicator.updateIcon();
 					break;
 
 				case sf::Keyboard::Escape:
@@ -359,11 +352,11 @@ void Application::updateMouseEvents()
 
 	if (backBtn.onClick())	targetWindow.close();
 
-	if (selectionSortBtn.onClick())	visualizeSelection();
+	if (selectionSortBtn.onClick())	visualizeSelection(elements);
 
-	if (insertionSortBtn.onClick())	visualizeInsertion();
+	if (insertionSortBtn.onClick())	visualizeInsertion(elements);
 
-	if (shellSortBtn.onClick())	visualizeShellSort();
+	if (shellSortBtn.onClick())	visualizeShellSort(elements);
 
 	if (plusBtn.onClick())	inrElements();
 
@@ -395,25 +388,24 @@ void Application::updateEvents()
 					// B -> Bubble Sort Visualization
 
 				case sf::Keyboard::I:
-					visualizeInsertion();
+					visualizeInsertion(elements);
 					break;
 
 
 				case sf::Keyboard::H:
-					visualizeShellSort();
+					visualizeShellSort(elements);
 					break;
 
 				case sf::Keyboard::B:
-					visualizeBubbleSort();
+					visualizeBubbleSort(elements);
 					break;
 
 				case sf::Keyboard::S:
-					visualizeSelection();
+					visualizeSelection(elements);
 					break;
 
-				case sf::Keyboard::P:
+				case sf::Keyboard::Space:
 					pauseIndicator.reverseState();
-					pauseIndicator.updateIcon();
 					handlePause();
 					break;
 
@@ -456,9 +448,7 @@ void Application::updateEvents()
 void Application::update()
 {
 	updateEvents();
-	pauseIndicator.updateIcon();
 	updateSortDetails();
-
 }
 
 
@@ -476,7 +466,6 @@ void Application::drawNavBar()
 	genNewArrBtn.renderOn(targetWindow);
 
 	targetWindow.draw(btmNavBar);
-	pauseIndicator.updateIcon();
 	pauseIndicator.renderOn(targetWindow);
 
 }
@@ -485,9 +474,10 @@ void Application::drawNavBar()
 void Application::drawSortDetails()
 {
 	targetWindow.draw(elementsSizeIndicator);
+	targetWindow.draw(animationSpeedIndicator);
+
 	targetWindow.draw(swapIndicator);
 	targetWindow.draw(comparisionIndicator);
-	targetWindow.draw(animationSpeedIndicator);
 }
 
 // Draws all elements 
@@ -504,8 +494,8 @@ void Application::drawElements()
 // Renders every visuals at real time
 void Application::renderEverything()
 {
-	// clears window for update visuals
-	targetWindow.clear(sf::Color::Cyan);
+	// clears window for updated visuals
+	targetWindow.clear(themeColor);
 
 	// draws visuals
 	drawNavBar();

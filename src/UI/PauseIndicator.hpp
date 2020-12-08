@@ -17,6 +17,7 @@ public:
 
 	void setState(const bool& _state);
 
+	// Flips pause state
 	void reverseState();
 
 	bool isPaused() const;

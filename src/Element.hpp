@@ -25,7 +25,7 @@ public:
 	// Sets rectangle's position and size for the element
 	void setRect(const float& _x_pos, const float& _y_pos, const float& _width);
 
-	// Moves element
+	// Moves element with given offsets
 	void move(const float& offsetX, const float& offsetY);
 
 	// Sets color of element and element's rectangle

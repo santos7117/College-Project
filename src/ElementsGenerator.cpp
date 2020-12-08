@@ -1,14 +1,14 @@
 #include "stdafx.hpp"
 
-#include "RandomArrayGenerator.hpp"
+#include "ElementsGenerator.hpp"
 
-RandomArrayGenerator::RandomArrayGenerator() :
+ElementsGenerator::ElementsGenerator() :
 	elements{ARR_SIZE}
 {}
 
 
 // Returns initilized vector
-std::vector<Element> &RandomArrayGenerator::init() 
+ElementsArray& ElementsGenerator::init() 
 {
 	// creates seed each time program starts
 	std::srand(short unsigned(std::time(nullptr)));
@@ -18,7 +18,7 @@ std::vector<Element> &RandomArrayGenerator::init()
 
 
 // Fills vector with random numbers upto given index
-std::vector<Element>& RandomArrayGenerator::randomize(const short unsigned& _numOfElements = ARR_SIZE)
+ElementsArray& ElementsGenerator::randomize(const short unsigned& _numOfElements = ARR_SIZE)
 {
 	for (short i{ 0 }; i< _numOfElements; ++i)
 	{

@@ -4,7 +4,7 @@
 #define _STATE_HPP
 
 
-
+// Base Class for modeling all States
 class State
 {
 public:

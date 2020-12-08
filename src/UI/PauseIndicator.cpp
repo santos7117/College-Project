@@ -9,7 +9,7 @@ PauseIndicator::PauseIndicator() :
 	sprite{rsc.pauseIcon},
 	pauseStatus{ 0 }
 {
-	sprite.setPosition((SCR_WIDTH - 50) / 2.f, btmNavBarPos.y + 5);
+	sprite.setPosition((SCR_WIDTH - 50) / 2.f, btmNavBarPos.y + 1);
 }
 
 void PauseIndicator::setState(const bool& _state) {	pauseStatus = _state; }

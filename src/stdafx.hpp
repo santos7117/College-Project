@@ -3,9 +3,8 @@
 #ifndef _STDAFX_HPP
 #define _STDAFX_HPP
 
-#include <memory>
-#include <stack>
-#include <array>
+
+// Headers for precompilation
 
 #include <SFML/Window/Event.hpp>
 #include <SFML/Graphics/Font.hpp>
